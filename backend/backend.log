@@ -1,0 +1,141 @@
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32mDatabase schema initialized successfully[39m {
+  "service": "internet-banking-api"
+}
+ExpressSlowDownWarning: The behaviour of the 'delayMs' option was changed in express-slow-down v2:
+- For the old behavior, change the delayMs option to:
+
+  delayMs: (used, req) => {
+	  const delayAfter = req.slowDown.limit;
+	  return (used - delayAfter) * 500;
+  },
+
+- For the new behavior, change the delayMs option to:
+
+	delayMs: () => 500,
+
+Or set 'options.validate: {delayMs: false}' to disable this message. See https://express-rate-limit.github.io/WRN_ESD_DELAYMS/ for more information.
+    at slowDown (/Users/kriszzdiscord/Documents/Code/internet_banking/backend/node_modules/express-slow-down/dist/index.cjs:78:18)
+    at Object.<anonymous> (/Users/kriszzdiscord/Documents/Code/internet_banking/backend/src/middleware/security.ts:35:37)
+    at Module._compile (node:internal/modules/cjs/loader:1692:14)
+    at Module.m._compile (/Users/kriszzdiscord/Documents/Code/internet_banking/backend/node_modules/ts-node/src/index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1824:10
+    at Object.require.extensions.<computed> [as .ts] (/Users/kriszzdiscord/Documents/Code/internet_banking/backend/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1427:32)
+    at Module._load (node:internal/modules/cjs/loader:1250:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+  code: 'WRN_ESD_DELAYMS',
+  help: 'https://express-rate-limit.github.io/WRN_ESD_DELAYMS/'
+}
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32m🚀 Server running on port 5001 in development mode[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32m📚 API documentation available at http://localhost:5001/api[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32m🔍 Health check available at http://localhost:5001/health[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32mDatabase already has test data[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:21 [[32m[32minfo[32m[39m]: [32mDatabase initialized with test data[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:31 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "curl/8.7.1"
+}
+2025-07-17 16:19:31 [[32m[32minfo[32m[39m]: [32mUser logged in: admin@primeedge.com[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:19:40 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:19:40 [[32m[32minfo[32m[39m]: [32mUser logged in: admin@primeedge.com[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:20:02 [[32m[32minfo[32m[39m]: [32mGET /api/dashboard/overview[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:22:52 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:22:52 [[32m[32minfo[32m[39m]: [32mUser logged in: user@primeedge.com[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:23:01 [[32m[32minfo[32m[39m]: [32mGET /api/dashboard/overview[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:23:16 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:23:16 [[32m[32minfo[32m[39m]: [32mUser logged in: business@primeedge.com[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:23:27 [[32m[32minfo[32m[39m]: [32mGET /api/dashboard/overview[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:24:07 [[32m[32minfo[32m[39m]: [32mGET /api/auth/me[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:24:25 [[32m[32minfo[32m[39m]: [32mGET /api/auth/me[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:24:25 [[33m[33mwarn[33m[39m]: [33mRate limit exceeded for IP: ::1 on /me[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:24:44 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/logout[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:24:44 [[33m[33mwarn[33m[39m]: [33mRate limit exceeded for IP: ::1 on /logout[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:25:00 [[32m[32minfo[32m[39m]: [32mGET /api/auth/me[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "curl/8.7.1"
+}
+2025-07-17 16:25:00 [[33m[33mwarn[33m[39m]: [33mRate limit exceeded for IP: ::1 on /me[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:25:36 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:25:36 [[33m[33mwarn[33m[39m]: [33mRate limit exceeded for IP: ::1 on /login[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:25:36 [[32m[32minfo[32m[39m]: [32mPOST /api/auth/login[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
+2025-07-17 16:25:36 [[33m[33mwarn[33m[39m]: [33mRate limit exceeded for IP: ::1 on /login[39m {
+  "service": "internet-banking-api"
+}
+2025-07-17 16:25:36 [[32m[32minfo[32m[39m]: [32mGET /api/dashboard/overview[39m {
+  "service": "internet-banking-api",
+  "ip": "::1",
+  "userAgent": "node"
+}
