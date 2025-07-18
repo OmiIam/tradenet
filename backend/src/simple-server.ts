@@ -8,7 +8,7 @@ import simpleAuthRoutes from './routes/simple-auth';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Trust proxy for accurate IP addresses
 app.set('trust proxy', 1);
@@ -16,7 +16,8 @@ app.set('trust proxy', 1);
 // CORS configuration
 const corsOptions = {
   origin: function (origin: string | undefined, callback: Function) {
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+    // Get allowed origins from environment variable or use localhost defaults
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001'];
     
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);

@@ -294,7 +294,7 @@ const LoginPage = () => {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-50 border border-red-200 rounded-lg p-4"
+                  className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
                 >
                   <div className="flex items-center space-x-2 text-red-600">
                     <AlertCircle className="w-5 h-5" />
@@ -447,35 +447,24 @@ const LoginPage = () => {
                 </Link>
               </div>
 
-              {/* Test Credentials */}
-              <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="mb-3">
-                  <h4 className="text-sm font-medium text-blue-800 mb-2">🧪 Test Credentials</h4>
-                </div>
-                <div className="grid gap-2 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-blue-700">Regular User:</span>
-                    <span className="text-blue-800 font-mono">user@primeedge.com / user123</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-blue-700">Business User:</span>
-                    <span className="text-blue-800 font-mono">business@primeedge.com / business123</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-blue-700">Admin User:</span>
-                    <span className="text-blue-800 font-mono">admin@primeedge.com / admin123</span>
-                  </div>
-                </div>
-              </div>
 
               {/* Security Notice */}
-              <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
                   <div>
                     <p className="text-sm text-green-800 font-medium">Secure Connection</p>
                     <p className="text-xs text-green-700">Your data is protected with 256-bit SSL encryption</p>
                   </div>
+                </div>
+              </div>
+
+              {/* Help & Support */}
+              <div className="mt-4 text-center">
+                <p className="text-sm text-banking-slate mb-2">Need help signing in?</p>
+                <div className="flex justify-center space-x-4 text-sm">
+                  <Link href="/help" className="text-banking-accent hover:text-banking-deepBlue">Contact Support</Link>
+                  <Link href="/help/login" className="text-banking-accent hover:text-banking-deepBlue">Login Help</Link>
                 </div>
               </div>
             </div>

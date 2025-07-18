@@ -8,6 +8,8 @@
     "dev:full": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/simple-server.js",
+    "start:railway": "node dist/simple-server.js",
+    "deploy:railway": "./deploy-railway.sh",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"

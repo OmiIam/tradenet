@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
 
@@ -72,26 +72,22 @@ export const authService = {
   },
 
   generateAccessToken(user: User): string {
-    return jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        isAdmin: user.is_admin,
-        accountType: user.account_type
-      },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRE || '1h' }
-    );
+    const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+    const payload = {
+      id: user.id,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      isAdmin: user.is_admin,
+      accountType: user.account_type
+    };
+    return jwt.sign(payload, jwtSecret, { expiresIn: process.env.JWT_EXPIRE || '1h' } as SignOptions);
   },
 
   generateRefreshToken(userId: number): string {
-    return jwt.sign(
-      { userId },
-      process.env.JWT_REFRESH_SECRET!,
-      { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' }
-    );
+    const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET || 'default-refresh-secret-change-in-production';
+    const payload = { userId };
+    return jwt.sign(payload, jwtRefreshSecret, { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' } as SignOptions);
   },
 
   verifyAccessToken(token: string): any {

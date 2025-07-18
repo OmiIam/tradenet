@@ -526,7 +526,7 @@ export class DatabaseService {
       const accounts = [
         // John Doe accounts
         {
-          user_id: createdUsers[1].id,
+          user_id: createdUsers[1]?.id || 0,
           account_number: '4532123456789012',
           account_type: 'checking' as const,
           account_name: 'Primary Checking',
@@ -537,7 +537,7 @@ export class DatabaseService {
           monthly_fee: 0
         },
         {
-          user_id: createdUsers[1].id,
+          user_id: createdUsers[1]?.id || 0,
           account_number: '4532567890123456',
           account_type: 'savings' as const,
           account_name: 'Emergency Savings',
@@ -549,7 +549,7 @@ export class DatabaseService {
         },
         // Sarah Johnson business account
         {
-          user_id: createdUsers[2].id,
+          user_id: createdUsers[2]?.id || 0,
           account_number: '4532901234567890',
           account_type: 'business' as const,
           account_name: 'Business Operations',
@@ -561,7 +561,7 @@ export class DatabaseService {
         },
         // Mike Wilson account (inactive user)
         {
-          user_id: createdUsers[3].id,
+          user_id: createdUsers[3]?.id || 0,
           account_number: '4532111122223333',
           account_type: 'checking' as const,
           account_name: 'Personal Checking',
@@ -573,7 +573,7 @@ export class DatabaseService {
         },
         // Emily Davis business accounts
         {
-          user_id: createdUsers[4].id,
+          user_id: createdUsers[4]?.id || 0,
           account_number: '4532444455556666',
           account_type: 'business' as const,
           account_name: 'Startup Operations',
@@ -584,7 +584,7 @@ export class DatabaseService {
           monthly_fee: 50
         },
         {
-          user_id: createdUsers[4].id,
+          user_id: createdUsers[4]?.id || 0,
           account_number: '4532777788889999',
           account_type: 'checking' as const,
           account_name: 'Business Checking',
@@ -596,7 +596,7 @@ export class DatabaseService {
         },
         // Lisa Brown accounts
         {
-          user_id: createdUsers[5].id,
+          user_id: createdUsers[5]?.id || 0,
           account_number: '4532000011112222',
           account_type: 'checking' as const,
           account_name: 'Main Checking',
@@ -607,7 +607,7 @@ export class DatabaseService {
           monthly_fee: 0
         },
         {
-          user_id: createdUsers[5].id,
+          user_id: createdUsers[5]?.id || 0,
           account_number: '4532333344445555',
           account_type: 'savings' as const,
           account_name: 'Vacation Fund',
@@ -659,6 +659,7 @@ export class DatabaseService {
 
       for (const template of transactionTemplates) {
         const account = createdAccounts[template.account];
+        if (!account) continue;
         const transactionDate = new Date();
         transactionDate.setDate(transactionDate.getDate() - template.days_ago);
         
@@ -677,7 +678,7 @@ export class DatabaseService {
       // Create test payees
       const payees = [
         {
-          user_id: createdUsers[1].id,
+          user_id: createdUsers[1]?.id || 0,
           name: 'Electric Company',
           account_number: '9876543210',
           routing_number: '021000021',
@@ -688,7 +689,7 @@ export class DatabaseService {
           memo: 'Monthly electricity bill'
         },
         {
-          user_id: createdUsers[1].id,
+          user_id: createdUsers[1]?.id || 0,
           name: 'Jane Smith',
           account_number: '1234567890',
           routing_number: '021000021',
@@ -699,7 +700,7 @@ export class DatabaseService {
           memo: 'Friend - split expenses'
         },
         {
-          user_id: createdUsers[2].id,
+          user_id: createdUsers[2]?.id || 0,
           name: 'Office Landlord LLC',
           account_number: '5555666677',
           routing_number: '021000021',

@@ -10,11 +10,11 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const simple_auth_1 = __importDefault(require("./routes/simple-auth"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 const corsOptions = {
     origin: function (origin, callback) {
-        const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+        const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001'];
         if (!origin)
             return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1) {

@@ -164,13 +164,13 @@ const UserSchema = new Schema<IUser>({
   toJSON: { 
     virtuals: true,
     transform: function(doc, ret) {
-      delete ret.passwordHash;
-      delete ret.twoFactorSecret;
-      delete ret.passwordResetToken;
-      delete ret.passwordResetExpires;
-      delete ret.emailVerificationToken;
-      delete ret.emailVerificationExpires;
-      delete ret.__v;
+      delete (ret as any).passwordHash;
+      delete (ret as any).twoFactorSecret;
+      delete (ret as any).passwordResetToken;
+      delete (ret as any).passwordResetExpires;
+      delete (ret as any).emailVerificationToken;
+      delete (ret as any).emailVerificationExpires;
+      delete (ret as any).__v;
       return ret;
     }
   },

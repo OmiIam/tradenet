@@ -386,7 +386,7 @@ class DatabaseService {
             }
             const accounts = [
                 {
-                    user_id: createdUsers[1].id,
+                    user_id: createdUsers[1]?.id || 0,
                     account_number: '4532123456789012',
                     account_type: 'checking',
                     account_name: 'Primary Checking',
@@ -397,7 +397,7 @@ class DatabaseService {
                     monthly_fee: 0
                 },
                 {
-                    user_id: createdUsers[1].id,
+                    user_id: createdUsers[1]?.id || 0,
                     account_number: '4532567890123456',
                     account_type: 'savings',
                     account_name: 'Emergency Savings',
@@ -408,7 +408,7 @@ class DatabaseService {
                     monthly_fee: 0
                 },
                 {
-                    user_id: createdUsers[2].id,
+                    user_id: createdUsers[2]?.id || 0,
                     account_number: '4532901234567890',
                     account_type: 'business',
                     account_name: 'Business Operations',
@@ -419,7 +419,7 @@ class DatabaseService {
                     monthly_fee: 25
                 },
                 {
-                    user_id: createdUsers[3].id,
+                    user_id: createdUsers[3]?.id || 0,
                     account_number: '4532111122223333',
                     account_type: 'checking',
                     account_name: 'Personal Checking',
@@ -430,7 +430,7 @@ class DatabaseService {
                     monthly_fee: 0
                 },
                 {
-                    user_id: createdUsers[4].id,
+                    user_id: createdUsers[4]?.id || 0,
                     account_number: '4532444455556666',
                     account_type: 'business',
                     account_name: 'Startup Operations',
@@ -441,7 +441,7 @@ class DatabaseService {
                     monthly_fee: 50
                 },
                 {
-                    user_id: createdUsers[4].id,
+                    user_id: createdUsers[4]?.id || 0,
                     account_number: '4532777788889999',
                     account_type: 'checking',
                     account_name: 'Business Checking',
@@ -452,7 +452,7 @@ class DatabaseService {
                     monthly_fee: 15
                 },
                 {
-                    user_id: createdUsers[5].id,
+                    user_id: createdUsers[5]?.id || 0,
                     account_number: '4532000011112222',
                     account_type: 'checking',
                     account_name: 'Main Checking',
@@ -463,7 +463,7 @@ class DatabaseService {
                     monthly_fee: 0
                 },
                 {
-                    user_id: createdUsers[5].id,
+                    user_id: createdUsers[5]?.id || 0,
                     account_number: '4532333344445555',
                     account_type: 'savings',
                     account_name: 'Vacation Fund',
@@ -504,6 +504,8 @@ class DatabaseService {
             ];
             for (const template of transactionTemplates) {
                 const account = createdAccounts[template.account];
+                if (!account)
+                    continue;
                 const transactionDate = new Date();
                 transactionDate.setDate(transactionDate.getDate() - template.days_ago);
                 await this.createTransaction({
@@ -519,7 +521,7 @@ class DatabaseService {
             }
             const payees = [
                 {
-                    user_id: createdUsers[1].id,
+                    user_id: createdUsers[1]?.id || 0,
                     name: 'Electric Company',
                     account_number: '9876543210',
                     routing_number: '021000021',
@@ -530,7 +532,7 @@ class DatabaseService {
                     memo: 'Monthly electricity bill'
                 },
                 {
-                    user_id: createdUsers[1].id,
+                    user_id: createdUsers[1]?.id || 0,
                     name: 'Jane Smith',
                     account_number: '1234567890',
                     routing_number: '021000021',
@@ -541,7 +543,7 @@ class DatabaseService {
                     memo: 'Friend - split expenses'
                 },
                 {
-                    user_id: createdUsers[2].id,
+                    user_id: createdUsers[2]?.id || 0,
                     name: 'Office Landlord LLC',
                     account_number: '5555666677',
                     routing_number: '021000021',

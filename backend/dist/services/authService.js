@@ -48,17 +48,21 @@ exports.authService = {
         return bcryptjs_1.default.hash(password, 12);
     },
     generateAccessToken(user) {
-        return jsonwebtoken_1.default.sign({
+        const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+        const payload = {
             id: user.id,
             email: user.email,
             firstName: user.first_name,
             lastName: user.last_name,
             isAdmin: user.is_admin,
             accountType: user.account_type
-        }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '1h' });
+        };
+        return jsonwebtoken_1.default.sign(payload, jwtSecret, { expiresIn: process.env.JWT_EXPIRE || '1h' });
     },
     generateRefreshToken(userId) {
-        return jsonwebtoken_1.default.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' });
+        const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET || 'default-refresh-secret-change-in-production';
+        const payload = { userId };
+        return jsonwebtoken_1.default.sign(payload, jwtRefreshSecret, { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' });
     },
     verifyAccessToken(token) {
         try {

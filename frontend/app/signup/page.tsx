@@ -59,6 +59,7 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -160,11 +161,23 @@ const SignupPage = () => {
     setCurrentStep(prev => prev - 1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep(currentStep)) {
-      // Handle form submission
-      console.log('Form submitted:', formData);
+      setIsLoading(true);
+      try {
+        // TODO: Implement actual registration API call
+        console.log('Form submitted:', formData);
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        // For now, just show success message
+        alert('Account created successfully! Please check your email for verification.');
+      } catch (error) {
+        console.error('Registration failed:', error);
+        setErrors({ general: 'Registration failed. Please try again.' });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -634,14 +647,81 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-banking-light">
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+      {/* Enhanced Animated Background */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ 
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #3b82f6 50%, #6366f1 75%, #8b5cf6 100%)',
+          backgroundSize: '400% 400%'
+        }}
+        animate={{ 
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      />
+      
+      {/* Animated Mesh Background */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(120,119,198,0.3),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(255,119,198,0.3),transparent_50%)]"></div>
+      </div>
+      
+      {/* Floating Elements */}
+      <motion.div
+        className="absolute top-[-10%] left-[-10%] w-96 h-96 rounded-full bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-3xl z-0"
+        animate={{ 
+          y: [0, 40, 0], 
+          x: [0, 30, 0],
+          scale: [1, 1.1, 1]
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-[-15%] right-[-10%] w-[32rem] h-[32rem] rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-3xl z-0"
+        animate={{ 
+          y: [0, -30, 0], 
+          x: [0, -40, 0],
+          scale: [1, 0.9, 1]
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-[60%] w-80 h-80 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-2xl z-0"
+        animate={{ 
+          y: [0, 20, 0], 
+          x: [0, -20, 0],
+          rotate: [0, 360]
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      />
+      
+      {/* Geometric Shapes */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-4 h-4 bg-white/20 rounded-full z-0"
+        animate={{ 
+          y: [0, -20, 0],
+          opacity: [0.3, 0.8, 0.3]
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-6 h-6 bg-blue-300/30 rounded-full z-0"
+        animate={{ 
+          y: [0, 15, 0],
+          opacity: [0.4, 0.9, 0.4]
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-8">
-          <Logo size="md" variant="dark" />
-          <h1 className="text-3xl font-bold text-banking-navy mt-6 mb-2">
+          <Logo size="md" variant="light" />
+          <h1 className="text-3xl font-bold text-white mt-6 mb-2">
             Create Your Account
           </h1>
-          <p className="text-banking-slate">
+          <p className="text-blue-200">
             Join Prime Edge Banking and start your journey to financial success
           </p>
         </div>
@@ -681,6 +761,20 @@ const SignupPage = () => {
 
         {/* Form */}
         <div className="card-banking p-8 max-w-2xl mx-auto">
+          {/* General Error Message */}
+          {errors.general && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+            >
+              <div className="flex items-center space-x-2 text-red-600">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm">{errors.general}</span>
+              </div>
+            </motion.div>
+          )}
+          
           <form onSubmit={handleSubmit}>
             <AnimatePresence mode="wait">
               {renderStep()}
@@ -718,12 +812,22 @@ const SignupPage = () => {
                 ) : (
                   <motion.button
                     type="submit"
-                    className="flex items-center space-x-2 btn-primary"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    disabled={isLoading}
+                    className="flex items-center space-x-2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                    whileTap={{ scale: isLoading ? 1 : 0.98 }}
                   >
-                    <span>Create Account</span>
-                    <CheckCircle className="w-5 h-5" />
+                    {isLoading ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                        <span>Creating Account...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Create Account</span>
+                        <CheckCircle className="w-5 h-5" />
+                      </>
+                    )}
                   </motion.button>
                 )}
               </div>
@@ -732,10 +836,19 @@ const SignupPage = () => {
 
           {/* Sign In Link */}
           <div className="mt-8 text-center">
-            <span className="text-banking-slate">Don&apos;t have an account? </span>
-            <Link href="/login" className="text-banking-accent hover:text-banking-deepBlue font-medium">
+            <span className="text-blue-200">Already have an account? </span>
+            <Link href="/login" className="text-blue-300 hover:text-white font-medium">
               Sign in here
             </Link>
+          </div>
+
+          {/* Help & Support */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-blue-200 mb-2">Need assistance?</p>
+            <div className="flex justify-center space-x-4 text-sm">
+              <Link href="/help" className="text-blue-300 hover:text-white">Contact Support</Link>
+              <Link href="/help/signup" className="text-blue-300 hover:text-white">Signup Help</Link>
+            </div>
           </div>
         </div>
       </div>
