@@ -49,60 +49,79 @@ export default function AdminOverviewPage() {
 
   const fetchAdminData = async () => {
     try {
-      // Mock data for now - will be replaced with API calls
-      const mockStats: AdminStats = {
-        totalUsers: 1247,
-        activeUsers: 892,
-        totalAccounts: 2891,
-        totalBalance: 45678901.23,
-        todayTransactions: 2156,
-        todayVolume: 8945672.50,
-        pendingTransactions: 12,
-        systemAlerts: 3
-      };
+      // Fetch real stats from backend
+      const statsResponse = await fetch('/api/admin/stats', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData);
+      } else {
+        console.error('Failed to fetch admin stats');
+        // Fallback to mock data if API fails
+        setStats({
+          totalUsers: 0,
+          activeUsers: 0,
+          totalAccounts: 0,
+          totalBalance: 0,
+          todayTransactions: 0,
+          todayVolume: 0,
+          pendingTransactions: 0,
+          systemAlerts: 0
+        });
+      }
+
+      // Mock activity data for now - will implement audit logging later
       const mockActivity: RecentActivity[] = [
         {
           id: '1',
           type: 'user_created',
           message: 'New user registration: john.doe@email.com',
-          timestamp: '2024-01-16T14:30:00Z',
+          timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
           severity: 'low'
         },
         {
           id: '2',
           type: 'large_transaction',
           message: 'Large transaction detected: $50,000 transfer',
-          timestamp: '2024-01-16T14:25:00Z',
+          timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
           severity: 'medium'
         },
         {
           id: '3',
           type: 'failed_login',
-          message: 'Multiple failed login attempts from IP 192.168.1.100',
-          timestamp: '2024-01-16T14:20:00Z',
+          message: 'Multiple failed login attempts detected',
+          timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
           severity: 'high'
         },
         {
           id: '4',
           type: 'admin_action',
-          message: 'Account balance updated by admin: Account #1234',
-          timestamp: '2024-01-16T14:15:00Z',
+          message: 'Account balance updated by admin',
+          timestamp: new Date(Date.now() - 75 * 60 * 1000).toISOString(),
           severity: 'medium'
-        },
-        {
-          id: '5',
-          type: 'account_locked',
-          message: 'Account automatically locked due to suspicious activity',
-          timestamp: '2024-01-16T14:10:00Z',
-          severity: 'high'
         }
       ];
 
-      setStats(mockStats);
       setRecentActivity(mockActivity);
     } catch (error) {
       console.error('Failed to fetch admin data:', error);
+      // Set fallback data on error
+      setStats({
+        totalUsers: 0,
+        activeUsers: 0,
+        totalAccounts: 0,
+        totalBalance: 0,
+        todayTransactions: 0,
+        todayVolume: 0,
+        pendingTransactions: 0,
+        systemAlerts: 0
+      });
     } finally {
       setLoading(false);
     }

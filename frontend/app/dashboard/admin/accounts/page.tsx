@@ -43,76 +43,22 @@ export default function AdminAccountsPage() {
 
   const fetchAccounts = async () => {
     try {
-      // Mock data for now - will be replaced with API call
-      const mockAccounts: AdminAccount[] = [
-        {
-          id: 1,
-          userId: 1,
-          userEmail: 'john.doe@email.com',
-          userName: 'John Doe',
-          accountNumber: '4532 1234 5678 9012',
-          accountType: 'checking',
-          accountName: 'Primary Checking',
-          balance: 15420.50,
-          availableBalance: 15420.50,
-          isActive: true,
-          createdAt: '2024-01-01T00:00:00Z'
+      // Fetch real accounts from backend
+      const response = await fetch('/api/admin/accounts', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          id: 2,
-          userId: 1,
-          userEmail: 'john.doe@email.com',
-          userName: 'John Doe',
-          accountNumber: '4532 5678 9012 3456',
-          accountType: 'savings',
-          accountName: 'Emergency Savings',
-          balance: 25000.00,
-          availableBalance: 25000.00,
-          isActive: true,
-          createdAt: '2024-01-01T00:00:00Z'
-        },
-        {
-          id: 3,
-          userId: 2,
-          userEmail: 'sarah.johnson@business.com',
-          userName: 'Sarah Johnson',
-          accountNumber: '4532 9012 3456 7890',
-          accountType: 'business',
-          accountName: 'Business Operations',
-          balance: 125000.75,
-          availableBalance: 125000.75,
-          isActive: true,
-          createdAt: '2023-12-15T00:00:00Z'
-        },
-        {
-          id: 4,
-          userId: 2,
-          userEmail: 'sarah.johnson@business.com',
-          userName: 'Sarah Johnson',
-          accountNumber: '4532 3456 7890 1234',
-          accountType: 'cd',
-          accountName: '12-Month CD',
-          balance: 50000.00,
-          availableBalance: 0,
-          isActive: true,
-          createdAt: '2023-12-15T00:00:00Z'
-        },
-        {
-          id: 5,
-          userId: 4,
-          userEmail: 'mike.wilson@email.com',
-          userName: 'Mike Wilson',
-          accountNumber: '4532 7890 1234 5678',
-          accountType: 'checking',
-          accountName: 'Personal Checking',
-          balance: 5200.00,
-          availableBalance: 5200.00,
-          isActive: false,
-          createdAt: '2023-11-20T00:00:00Z'
-        }
-      ];
+      });
 
-      setAccounts(mockAccounts);
+      if (response.ok) {
+        const data = await response.json();
+        setAccounts(data.accounts || []);
+      } else {
+        console.error('Failed to fetch accounts');
+        setAccounts([]);
+      }
     } catch (error) {
       console.error('Failed to fetch accounts:', error);
     } finally {
@@ -136,23 +82,38 @@ export default function AdminAccountsPage() {
 
     setUpdating(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call the real backend API
+      const response = await fetch('/api/admin/accounts', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          accountId: balanceUpdate.accountId,
+          balance: balanceUpdate.newBalance,
+          reason: balanceUpdate.reason
+        }),
+      });
 
-      // Update the account in the list
-      setAccounts(prev => prev.map(account => 
-        account.id === balanceUpdate.accountId 
-          ? { 
-              ...account, 
-              balance: balanceUpdate.newBalance,
-              availableBalance: balanceUpdate.newBalance
-            }
-          : account
-      ));
+      if (response.ok) {
+        // Update the account in the list
+        setAccounts(prev => prev.map(account => 
+          account.id === balanceUpdate.accountId 
+            ? { 
+                ...account, 
+                balance: balanceUpdate.newBalance,
+                availableBalance: balanceUpdate.newBalance
+              }
+            : account
+        ));
 
-      setShowEditModal(false);
-      setSelectedAccount(null);
-      setBalanceUpdate({ accountId: 0, newBalance: 0, reason: '' });
+        setShowEditModal(false);
+        setSelectedAccount(null);
+        setBalanceUpdate({ accountId: 0, newBalance: 0, reason: '' });
+      } else {
+        console.error('Failed to update balance');
+      }
     } catch (error) {
       console.error('Failed to update balance:', error);
     } finally {

@@ -85,6 +85,8 @@ export declare class DatabaseService {
     createPayee(payeeData: Partial<Payee>): Promise<Payee>;
     getPayeeById(id: number): Promise<Payee | null>;
     getPayeesByUserId(userId: number): Promise<Payee[]>;
+    getAllPayees(): Promise<Payee[]>;
+    updatePayee(id: number, updates: Partial<Payee>): Promise<Payee | null>;
     getTotalBalance(userId: number): Promise<number>;
     getPendingTransactionsCount(userId: number): Promise<number>;
     initializeTestData(): Promise<void>;

@@ -42,76 +42,22 @@ export default function AdminUsersPage() {
 
   const fetchUsers = async () => {
     try {
-      // Mock data for now - will be replaced with API call
-      const mockUsers: AdminUser[] = [
-        {
-          id: 1,
-          email: 'john.doe@email.com',
-          firstName: 'John',
-          lastName: 'Doe',
-          accountType: 'personal',
-          isAdmin: false,
-          isActive: true,
-          createdAt: '2024-01-01T00:00:00Z',
-          lastLogin: '2024-01-15T14:30:00Z',
-          accountCount: 2,
-          totalBalance: 15420.50
+      // Fetch real users from backend
+      const response = await fetch('/api/admin/users', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          id: 2,
-          email: 'sarah.johnson@business.com',
-          firstName: 'Sarah',
-          lastName: 'Johnson',
-          accountType: 'business',
-          isAdmin: false,
-          isActive: true,
-          createdAt: '2023-12-15T00:00:00Z',
-          lastLogin: '2024-01-16T09:15:00Z',
-          accountCount: 3,
-          totalBalance: 125000.75
-        },
-        {
-          id: 3,
-          email: 'admin@primeedge.com',
-          firstName: 'System',
-          lastName: 'Administrator',
-          accountType: 'personal',
-          isAdmin: true,
-          isActive: true,
-          createdAt: '2023-01-01T00:00:00Z',
-          lastLogin: '2024-01-16T15:45:00Z',
-          accountCount: 1,
-          totalBalance: 0
-        },
-        {
-          id: 4,
-          email: 'mike.wilson@email.com',
-          firstName: 'Mike',
-          lastName: 'Wilson',
-          accountType: 'personal',
-          isAdmin: false,
-          isActive: false,
-          createdAt: '2023-11-20T00:00:00Z',
-          lastLogin: '2024-01-10T11:20:00Z',
-          accountCount: 1,
-          totalBalance: 5200.00
-        },
-        {
-          id: 5,
-          email: 'emily.davis@startup.io',
-          firstName: 'Emily',
-          lastName: 'Davis',
-          accountType: 'business',
-          isAdmin: false,
-          isActive: true,
-          createdAt: '2024-01-10T00:00:00Z',
-          lastLogin: '2024-01-16T13:22:00Z',
-          accountCount: 4,
-          totalBalance: 89500.25
-        }
-      ];
+      });
 
-      setUsers(mockUsers);
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data.users || []);
+      } else {
+        console.error('Failed to fetch users');
+        setUsers([]);
+      }
     } catch (error) {
       console.error('Failed to fetch users:', error);
     } finally {
@@ -121,12 +67,28 @@ export default function AdminUsersPage() {
 
   const handleToggleUserStatus = async (userId: number, currentStatus: boolean) => {
     try {
-      // Simulate API call
-      setUsers(prev => prev.map(user => 
-        user.id === userId 
-          ? { ...user, isActive: !currentStatus }
-          : user
-      ));
+      const response = await fetch('/api/admin/users', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          isActive: !currentStatus
+        }),
+      });
+
+      if (response.ok) {
+        // Update local state
+        setUsers(prev => prev.map(user => 
+          user.id === userId 
+            ? { ...user, isActive: !currentStatus }
+            : user
+        ));
+      } else {
+        console.error('Failed to update user status');
+      }
     } catch (error) {
       console.error('Failed to toggle user status:', error);
     }

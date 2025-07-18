@@ -244,6 +244,30 @@ class DatabaseService {
             throw error;
         }
     }
+    async getAllPayees() {
+        try {
+            const stmt = this.db.getDatabase().prepare('SELECT * FROM payees ORDER BY created_at DESC');
+            return stmt.all();
+        }
+        catch (error) {
+            logger_1.logger.error('Error getting all payees:', error);
+            throw error;
+        }
+    }
+    async updatePayee(id, updates) {
+        try {
+            const fields = Object.keys(updates).map(key => `${key} = ?`).join(', ');
+            const values = Object.values(updates);
+            values.push(id);
+            const stmt = this.db.getDatabase().prepare(`UPDATE payees SET ${fields} WHERE id = ?`);
+            stmt.run(...values);
+            return this.getPayeeById(id);
+        }
+        catch (error) {
+            logger_1.logger.error('Error updating payee:', error);
+            throw error;
+        }
+    }
     async getTotalBalance(userId) {
         try {
             const stmt = this.db.getDatabase().prepare(`
@@ -282,104 +306,256 @@ class DatabaseService {
                 logger_1.logger.info('Database already has test data');
                 return;
             }
-            logger_1.logger.info('Initializing database with test data...');
-            const adminPassword = await bcryptjs_1.default.hash('admin123', 10);
-            const userPassword = await bcryptjs_1.default.hash('user123', 10);
-            const businessPassword = await bcryptjs_1.default.hash('business123', 10);
-            const adminUser = await this.createUser({
-                email: 'admin@primeedge.com',
-                password_hash: adminPassword,
-                first_name: 'System',
-                last_name: 'Administrator',
-                account_type: 'personal',
-                is_admin: true,
-                is_active: true
-            });
-            const regularUser = await this.createUser({
-                email: 'user@primeedge.com',
-                password_hash: userPassword,
-                first_name: 'John',
-                last_name: 'Doe',
-                phone: '(555) 123-4567',
-                account_type: 'personal',
-                is_admin: false,
-                is_active: true
-            });
-            const businessUser = await this.createUser({
-                email: 'business@primeedge.com',
-                password_hash: businessPassword,
-                first_name: 'Sarah',
-                last_name: 'Johnson',
-                phone: '(555) 987-6543',
-                account_type: 'business',
-                is_admin: false,
-                is_active: true
-            });
-            const checkingAccount = await this.createAccount({
-                user_id: regularUser.id,
-                account_number: '4532123456789012',
-                account_type: 'checking',
-                account_name: 'Primary Checking',
-                balance: 15420.50,
-                available_balance: 15420.50,
-                interest_rate: 0.01,
-                minimum_balance: 100,
-                monthly_fee: 0
-            });
-            const savingsAccount = await this.createAccount({
-                user_id: regularUser.id,
-                account_number: '4532567890123456',
-                account_type: 'savings',
-                account_name: 'Emergency Savings',
-                balance: 25000.00,
-                available_balance: 25000.00,
-                interest_rate: 2.5,
-                minimum_balance: 500,
-                monthly_fee: 0
-            });
-            const businessAccount = await this.createAccount({
-                user_id: businessUser.id,
-                account_number: '4532901234567890',
-                account_type: 'business',
-                account_name: 'Business Operations',
-                balance: 125000.75,
-                available_balance: 125000.75,
-                interest_rate: 0.5,
-                minimum_balance: 1000,
-                monthly_fee: 25
-            });
-            await this.createTransaction({
-                account_id: checkingAccount.id,
-                transaction_type: 'credit',
-                amount: 2500.00,
-                balance_after: 15420.50,
-                description: 'Salary Deposit',
-                category: 'income',
-                status: 'completed',
-                transaction_date: new Date('2024-01-15T08:00:00Z').toISOString()
-            });
-            await this.createTransaction({
-                account_id: checkingAccount.id,
-                transaction_type: 'debit',
-                amount: -150.00,
-                balance_after: 14920.50,
-                description: 'Grocery Store Purchase',
-                category: 'food',
-                status: 'completed',
-                transaction_date: new Date('2024-01-14T10:30:00Z').toISOString()
-            });
-            await this.createPayee({
-                user_id: regularUser.id,
-                name: 'Electric Company',
-                account_number: '9876543210',
-                routing_number: '021000021',
-                bank_name: 'Bank of America',
-                payee_type: 'utility',
-                phone: '(800) 555-0123',
-                email: 'billing@electricco.com',
-                memo: 'Monthly electricity bill'
-            });
-            logger_1.logger.info('Test data initialization completed successfully');
+            logger_1.logger.info('Initializing database with comprehensive test data...');
+            const users = [
+                {
+                    email: 'admin@primeedge.com',
+                    password: 'admin123',
+                    first_name: 'System',
+                    last_name: 'Administrator',
+                    phone: '(555) 000-0001',
+                    account_type: 'personal',
+                    is_admin: true,
+                    is_active: true
+                },
+                {
+                    email: 'user@primeedge.com',
+                    password: 'user123',
+                    first_name: 'John',
+                    last_name: 'Doe',
+                    phone: '(555) 123-4567',
+                    account_type: 'personal',
+                    is_admin: false,
+                    is_active: true
+                },
+                {
+                    email: 'business@primeedge.com',
+                    password: 'business123',
+                    first_name: 'Sarah',
+                    last_name: 'Johnson',
+                    phone: '(555) 987-6543',
+                    account_type: 'business',
+                    is_admin: false,
+                    is_active: true
+                },
+                {
+                    email: 'mike.wilson@email.com',
+                    password: 'mike123',
+                    first_name: 'Mike',
+                    last_name: 'Wilson',
+                    phone: '(555) 111-2222',
+                    account_type: 'personal',
+                    is_admin: false,
+                    is_active: false
+                },
+                {
+                    email: 'emily.davis@startup.io',
+                    password: 'emily123',
+                    first_name: 'Emily',
+                    last_name: 'Davis',
+                    phone: '(555) 333-4444',
+                    account_type: 'business',
+                    is_admin: false,
+                    is_active: true
+                },
+                {
+                    email: 'lisa.brown@email.com',
+                    password: 'lisa123',
+                    first_name: 'Lisa',
+                    last_name: 'Brown',
+                    phone: '(555) 555-6666',
+                    account_type: 'personal',
+                    is_admin: false,
+                    is_active: true
+                }
+            ];
+            const createdUsers = [];
+            for (const userData of users) {
+                const hashedPassword = await bcryptjs_1.default.hash(userData.password, 10);
+                const user = await this.createUser({
+                    email: userData.email,
+                    password_hash: hashedPassword,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    phone: userData.phone,
+                    account_type: userData.account_type,
+                    is_admin: userData.is_admin,
+                    is_active: userData.is_active
+                });
+                createdUsers.push(user);
+            }
+            const accounts = [
+                {
+                    user_id: createdUsers[1].id,
+                    account_number: '4532123456789012',
+                    account_type: 'checking',
+                    account_name: 'Primary Checking',
+                    balance: 15420.50,
+                    available_balance: 15420.50,
+                    interest_rate: 0.01,
+                    minimum_balance: 100,
+                    monthly_fee: 0
+                },
+                {
+                    user_id: createdUsers[1].id,
+                    account_number: '4532567890123456',
+                    account_type: 'savings',
+                    account_name: 'Emergency Savings',
+                    balance: 25000.00,
+                    available_balance: 25000.00,
+                    interest_rate: 2.5,
+                    minimum_balance: 500,
+                    monthly_fee: 0
+                },
+                {
+                    user_id: createdUsers[2].id,
+                    account_number: '4532901234567890',
+                    account_type: 'business',
+                    account_name: 'Business Operations',
+                    balance: 125000.75,
+                    available_balance: 125000.75,
+                    interest_rate: 0.5,
+                    minimum_balance: 1000,
+                    monthly_fee: 25
+                },
+                {
+                    user_id: createdUsers[3].id,
+                    account_number: '4532111122223333',
+                    account_type: 'checking',
+                    account_name: 'Personal Checking',
+                    balance: 5200.00,
+                    available_balance: 5200.00,
+                    interest_rate: 0.01,
+                    minimum_balance: 100,
+                    monthly_fee: 0
+                },
+                {
+                    user_id: createdUsers[4].id,
+                    account_number: '4532444455556666',
+                    account_type: 'business',
+                    account_name: 'Startup Operations',
+                    balance: 89500.25,
+                    available_balance: 89500.25,
+                    interest_rate: 0.75,
+                    minimum_balance: 2500,
+                    monthly_fee: 50
+                },
+                {
+                    user_id: createdUsers[4].id,
+                    account_number: '4532777788889999',
+                    account_type: 'checking',
+                    account_name: 'Business Checking',
+                    balance: 45200.00,
+                    available_balance: 45200.00,
+                    interest_rate: 0.25,
+                    minimum_balance: 1000,
+                    monthly_fee: 15
+                },
+                {
+                    user_id: createdUsers[5].id,
+                    account_number: '4532000011112222',
+                    account_type: 'checking',
+                    account_name: 'Main Checking',
+                    balance: 18500.25,
+                    available_balance: 18500.25,
+                    interest_rate: 0.01,
+                    minimum_balance: 100,
+                    monthly_fee: 0
+                },
+                {
+                    user_id: createdUsers[5].id,
+                    account_number: '4532333344445555',
+                    account_type: 'savings',
+                    account_name: 'Vacation Fund',
+                    balance: 10000.00,
+                    available_balance: 10000.00,
+                    interest_rate: 3.0,
+                    minimum_balance: 500,
+                    monthly_fee: 0
+                }
+            ];
+            const createdAccounts = [];
+            for (const accountData of accounts) {
+                const account = await this.createAccount(accountData);
+                createdAccounts.push(account);
+            }
+            const transactionTemplates = [
+                { account: 0, type: 'credit', amount: 2500.00, desc: 'Salary Deposit', category: 'income', days_ago: 1 },
+                { account: 0, type: 'debit', amount: -150.00, desc: 'Grocery Store Purchase', category: 'food', days_ago: 2 },
+                { account: 0, type: 'debit', amount: -89.99, desc: 'Gas Station', category: 'transportation', days_ago: 3 },
+                { account: 0, type: 'debit', amount: -45.00, desc: 'Restaurant Dinner', category: 'food', days_ago: 4 },
+                { account: 0, type: 'transfer', amount: -500.00, desc: 'Transfer to Savings', category: 'transfer', days_ago: 5 },
+                { account: 1, type: 'transfer', amount: 500.00, desc: 'Transfer from Checking', category: 'transfer', days_ago: 5 },
+                { account: 1, type: 'credit', amount: 25.50, desc: 'Interest Payment', category: 'interest', days_ago: 30 },
+                { account: 2, type: 'credit', amount: 15000.00, desc: 'Client Payment - Project Alpha', category: 'income', days_ago: 1 },
+                { account: 2, type: 'debit', amount: -2500.00, desc: 'Office Rent', category: 'business', days_ago: 2 },
+                { account: 2, type: 'debit', amount: -1200.00, desc: 'Employee Salaries', category: 'business', days_ago: 3 },
+                { account: 2, type: 'debit', amount: -89.99, desc: 'Office Supplies', category: 'business', days_ago: 4 },
+                { account: 4, type: 'credit', amount: 50000.00, desc: 'Investor Funding Round', category: 'income', days_ago: 7 },
+                { account: 4, type: 'debit', amount: -5000.00, desc: 'Software Licenses', category: 'business', days_ago: 8 },
+                { account: 4, type: 'debit', amount: -3500.00, desc: 'Marketing Campaign', category: 'business', days_ago: 10 },
+                { account: 5, type: 'credit', amount: 8500.00, desc: 'Product Sales Revenue', category: 'income', days_ago: 2 },
+                { account: 5, type: 'debit', amount: -1200.00, desc: 'Payment Processing Fees', category: 'business', days_ago: 3 },
+                { account: 6, type: 'credit', amount: 3200.00, desc: 'Salary Deposit', category: 'income', days_ago: 1 },
+                { account: 6, type: 'debit', amount: -1200.00, desc: 'Rent Payment', category: 'housing', days_ago: 2 },
+                { account: 6, type: 'debit', amount: -350.00, desc: 'Utility Bills', category: 'utilities', days_ago: 3 },
+                { account: 6, type: 'transfer', amount: -500.00, desc: 'Transfer to Vacation Fund', category: 'transfer', days_ago: 4 },
+                { account: 7, type: 'transfer', amount: 500.00, desc: 'Transfer from Checking', category: 'transfer', days_ago: 4 }
+            ];
+            for (const template of transactionTemplates) {
+                const account = createdAccounts[template.account];
+                const transactionDate = new Date();
+                transactionDate.setDate(transactionDate.getDate() - template.days_ago);
+                await this.createTransaction({
+                    account_id: account.id,
+                    transaction_type: template.type,
+                    amount: template.amount,
+                    balance_after: account.balance,
+                    description: template.desc,
+                    category: template.category,
+                    status: 'completed',
+                    transaction_date: transactionDate.toISOString()
+                });
+            }
+            const payees = [
+                {
+                    user_id: createdUsers[1].id,
+                    name: 'Electric Company',
+                    account_number: '9876543210',
+                    routing_number: '021000021',
+                    bank_name: 'Bank of America',
+                    payee_type: 'utility',
+                    phone: '(800) 555-0123',
+                    email: 'billing@electricco.com',
+                    memo: 'Monthly electricity bill'
+                },
+                {
+                    user_id: createdUsers[1].id,
+                    name: 'Jane Smith',
+                    account_number: '1234567890',
+                    routing_number: '021000021',
+                    bank_name: 'Chase Bank',
+                    payee_type: 'person',
+                    phone: '(555) 234-5678',
+                    email: 'jane.smith@email.com',
+                    memo: 'Friend - split expenses'
+                },
+                {
+                    user_id: createdUsers[2].id,
+                    name: 'Office Landlord LLC',
+                    account_number: '5555666677',
+                    routing_number: '021000021',
+                    bank_name: 'Wells Fargo',
+                    payee_type: 'business',
+                    phone: '(555) 777-8888',
+                    email: 'rent@officespace.com',
+                    memo: 'Monthly office rent'
+                }
+            ];
+            for (const payeeData of payees) {
+                await this.createPayee(payeeData);
+            }
+            logger_1.logger.info('Comprehensive test data initialization completed successfully');
         }
         catch (error) {
             logger_1.logger.error('Error initializing test data:', error);

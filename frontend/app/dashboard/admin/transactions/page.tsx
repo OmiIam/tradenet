@@ -39,98 +39,44 @@ export default function AdminTransactionsPage() {
 
   const fetchTransactions = async () => {
     try {
-      // Mock data for now - will be replaced with API call
-      const mockTransactions: AdminTransaction[] = [
-        {
-          id: 1,
-          accountId: 1,
-          userName: 'John Doe',
-          userEmail: 'john.doe@email.com',
-          accountName: 'Primary Checking',
-          accountNumber: '****9012',
-          transactionType: 'credit',
-          amount: 2500.00,
-          balanceAfter: 15420.50,
-          description: 'Salary Deposit',
-          referenceNumber: 'PEB001',
-          category: 'income',
-          status: 'completed',
-          transactionDate: '2024-01-15T08:00:00Z',
-          createdAt: '2024-01-15T08:00:00Z'
+      // Fetch real transactions from backend
+      const response = await fetch('/api/admin/transactions', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          id: 2,
-          accountId: 1,
-          userName: 'John Doe',
-          userEmail: 'john.doe@email.com',
-          accountName: 'Primary Checking',
-          accountNumber: '****9012',
-          transactionType: 'debit',
-          amount: -150.00,
-          balanceAfter: 14920.50,
-          description: 'Grocery Store Purchase',
-          referenceNumber: 'PEB002',
-          category: 'food',
-          status: 'completed',
-          transactionDate: '2024-01-14T10:30:00Z',
-          createdAt: '2024-01-14T10:30:00Z'
-        },
-        {
-          id: 3,
-          accountId: 2,
-          userName: 'Sarah Johnson',
-          userEmail: 'sarah.johnson@business.com',
-          accountName: 'Business Operations',
-          accountNumber: '****7890',
-          transactionType: 'credit',
-          amount: 50000.00,
-          balanceAfter: 175000.75,
-          description: 'Business Loan Deposit',
-          referenceNumber: 'PEB003',
-          category: 'business',
-          status: 'pending',
-          transactionDate: '2024-01-16T14:20:00Z',
-          createdAt: '2024-01-16T14:20:00Z'
-        },
-        {
-          id: 4,
-          accountId: 1,
-          userName: 'John Doe',
-          userEmail: 'john.doe@email.com',
-          accountName: 'Primary Checking',
-          accountNumber: '****9012',
-          transactionType: 'debit',
-          amount: -89.99,
-          balanceAfter: 14830.51,
-          description: 'Gas Station Payment',
-          referenceNumber: 'PEB004',
-          category: 'transportation',
-          status: 'failed',
-          transactionDate: '2024-01-13T16:45:00Z',
-          createdAt: '2024-01-13T16:45:00Z'
-        },
-        {
-          id: 5,
-          accountId: 3,
-          userName: 'Mike Wilson',
-          userEmail: 'mike.wilson@email.com',
-          accountName: 'Personal Checking',
-          accountNumber: '****5678',
-          transactionType: 'debit',
-          amount: -1200.00,
-          balanceAfter: 4000.00,
-          description: 'Rent Payment',
-          referenceNumber: 'PEB005',
-          category: 'housing',
-          status: 'completed',
-          transactionDate: '2024-01-01T09:00:00Z',
-          createdAt: '2024-01-01T09:00:00Z'
-        }
-      ];
+      });
 
-      setTransactions(mockTransactions);
+      if (response.ok) {
+        const data = await response.json();
+        // Transform backend data to match AdminTransaction interface
+        const enrichedTransactions: AdminTransaction[] = data.transactions.map((transaction: any) => ({
+          id: transaction.id,
+          accountId: transaction.accountId,
+          userName: transaction.userName || '',
+          userEmail: transaction.userEmail || '',
+          accountName: transaction.accountName || '',
+          accountNumber: transaction.accountNumber ? `****${transaction.accountNumber.slice(-4)}` : `****${String(transaction.accountId).slice(-4)}`,
+          transactionType: transaction.transactionType,
+          amount: transaction.amount,
+          balanceAfter: transaction.balanceAfter,
+          description: transaction.description,
+          referenceNumber: `TXN${transaction.id.toString().padStart(6, '0')}`,
+          category: transaction.category,
+          status: transaction.status,
+          transactionDate: transaction.transactionDate,
+          createdAt: transaction.createdAt,
+          createdBy: transaction.createdBy
+        }));
+        setTransactions(enrichedTransactions);
+      } else {
+        console.error('Failed to fetch transactions');
+        setTransactions([]);
+      }
     } catch (error) {
       console.error('Failed to fetch transactions:', error);
+      setTransactions([]);
     } finally {
       setLoading(false);
     }

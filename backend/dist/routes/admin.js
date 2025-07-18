@@ -12,8 +12,10 @@ router.use(auth_1.authenticateToken);
 router.use(auth_1.requireAdmin);
 router.get('/users', (0, errorHandler_1.asyncHandler)(async (req, res) => {
     const users = await database_1.default.getAllUsers();
-    res.json({
-        users: users.map(user => ({
+    const enrichedUsers = await Promise.all(users.map(async (user) => {
+        const accounts = await database_1.default.getAccountsByUserId(user.id);
+        const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0);
+        return {
             id: user.id,
             email: user.email,
             firstName: user.first_name,
@@ -22,8 +24,13 @@ router.get('/users', (0, errorHandler_1.asyncHandler)(async (req, res) => {
             accountType: user.account_type,
             isAdmin: user.is_admin,
             isActive: user.is_active,
-            createdAt: user.created_at
-        }))
+            createdAt: user.created_at,
+            accountCount: accounts.length,
+            totalBalance: totalBalance
+        };
+    }));
+    res.json({
+        users: enrichedUsers
     });
 }));
 router.put('/users/:id', (0, errorHandler_1.asyncHandler)(async (req, res) => {
@@ -55,10 +62,13 @@ router.put('/users/:id', (0, errorHandler_1.asyncHandler)(async (req, res) => {
 }));
 router.get('/accounts', (0, errorHandler_1.asyncHandler)(async (req, res) => {
     const accounts = await database_1.default.getAllAccounts();
-    res.json({
-        accounts: accounts.map(account => ({
+    const enrichedAccounts = await Promise.all(accounts.map(async (account) => {
+        const user = await database_1.default.getUserById(account.user_id);
+        return {
             id: account.id,
             userId: account.user_id,
+            userEmail: user?.email || '',
+            userName: user ? `${user.first_name} ${user.last_name}` : '',
             accountNumber: account.account_number,
             accountType: account.account_type,
             accountName: account.account_name,
@@ -69,7 +79,10 @@ router.get('/accounts', (0, errorHandler_1.asyncHandler)(async (req, res) => {
             monthlyFee: account.monthly_fee,
             isActive: account.is_active,
             createdAt: account.created_at
-        }))
+        };
+    }));
+    res.json({
+        accounts: enrichedAccounts
     });
 }));
 router.put('/accounts/:id/balance', (0, errorHandler_1.asyncHandler)(async (req, res) => {
@@ -108,10 +121,16 @@ router.put('/accounts/:id/balance', (0, errorHandler_1.asyncHandler)(async (req,
 }));
 router.get('/transactions', (0, errorHandler_1.asyncHandler)(async (req, res) => {
     const transactions = await database_1.default.getAllTransactions();
-    res.json({
-        transactions: transactions.map(transaction => ({
+    const enrichedTransactions = await Promise.all(transactions.map(async (transaction) => {
+        const account = await database_1.default.getAccountById(transaction.account_id);
+        const user = account ? await database_1.default.getUserById(account.user_id) : null;
+        return {
             id: transaction.id,
             accountId: transaction.account_id,
+            userName: user ? `${user.first_name} ${user.last_name}` : '',
+            userEmail: user?.email || '',
+            accountName: account?.account_name || '',
+            accountNumber: account?.account_number || '',
             transactionType: transaction.transaction_type,
             amount: transaction.amount,
             balanceAfter: transaction.balance_after,
@@ -121,7 +140,58 @@ router.get('/transactions', (0, errorHandler_1.asyncHandler)(async (req, res) =>
             transactionDate: transaction.transaction_date,
             createdAt: transaction.created_at,
             createdBy: transaction.created_by
-        }))
+        };
+    }));
+    res.json({
+        transactions: enrichedTransactions
+    });
+}));
+router.get('/payees', (0, errorHandler_1.asyncHandler)(async (req, res) => {
+    const payees = await database_1.default.getAllPayees();
+    const enrichedPayees = await Promise.all(payees.map(async (payee) => {
+        const user = await database_1.default.getUserById(payee.user_id);
+        return {
+            id: payee.id,
+            userId: payee.user_id,
+            userName: user ? `${user.first_name} ${user.last_name}` : '',
+            userEmail: user?.email || '',
+            name: payee.name,
+            accountNumber: payee.account_number,
+            routingNumber: payee.routing_number,
+            bankName: payee.bank_name,
+            payeeType: payee.payee_type,
+            phone: payee.phone,
+            email: payee.email,
+            memo: payee.memo,
+            isVerified: payee.is_verified,
+            isActive: payee.is_active,
+            createdAt: payee.created_at
+        };
+    }));
+    res.json({
+        payees: enrichedPayees
+    });
+}));
+router.put('/payees/:id', (0, errorHandler_1.asyncHandler)(async (req, res) => {
+    const payeeId = parseInt(req.params.id || '0');
+    const { isVerified, isActive } = req.body;
+    const payee = await database_1.default.getPayeeById(payeeId);
+    if (!payee) {
+        throw new errorHandler_1.NotFoundError('Payee not found');
+    }
+    const updatedPayee = await database_1.default.updatePayee(payeeId, {
+        is_verified: isVerified,
+        is_active: isActive
+    });
+    res.json({
+        success: true,
+        message: 'Payee updated successfully',
+        payee: {
+            id: updatedPayee.id,
+            name: updatedPayee.name,
+            isVerified: updatedPayee.is_verified,
+            isActive: updatedPayee.is_active
+        }
     });
 }));
 router.get('/stats', (0, errorHandler_1.asyncHandler)(async (req, res) => {

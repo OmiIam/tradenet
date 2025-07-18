@@ -13,8 +13,12 @@ router.use(requireAdmin);
 router.get('/users', asyncHandler(async (req: AuthenticatedRequest, res: any) => {
   const users = await DatabaseService.getAllUsers();
   
-  res.json({
-    users: users.map(user => ({
+  // Get additional data for each user
+  const enrichedUsers = await Promise.all(users.map(async (user) => {
+    const accounts = await DatabaseService.getAccountsByUserId(user.id);
+    const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0);
+    
+    return {
       id: user.id,
       email: user.email,
       firstName: user.first_name,
@@ -23,8 +27,14 @@ router.get('/users', asyncHandler(async (req: AuthenticatedRequest, res: any) =>
       accountType: user.account_type,
       isAdmin: user.is_admin,
       isActive: user.is_active,
-      createdAt: user.created_at
-    }))
+      createdAt: user.created_at,
+      accountCount: accounts.length,
+      totalBalance: totalBalance
+    };
+  }));
+  
+  res.json({
+    users: enrichedUsers
   });
 }));
 
@@ -64,10 +74,15 @@ router.put('/users/:id', asyncHandler(async (req: AuthenticatedRequest, res: any
 router.get('/accounts', asyncHandler(async (req: AuthenticatedRequest, res: any) => {
   const accounts = await DatabaseService.getAllAccounts();
   
-  res.json({
-    accounts: accounts.map(account => ({
+  // Get user information for each account
+  const enrichedAccounts = await Promise.all(accounts.map(async (account) => {
+    const user = await DatabaseService.getUserById(account.user_id);
+    
+    return {
       id: account.id,
       userId: account.user_id,
+      userEmail: user?.email || '',
+      userName: user ? `${user.first_name} ${user.last_name}` : '',
       accountNumber: account.account_number,
       accountType: account.account_type,
       accountName: account.account_name,
@@ -78,7 +93,11 @@ router.get('/accounts', asyncHandler(async (req: AuthenticatedRequest, res: any)
       monthlyFee: account.monthly_fee,
       isActive: account.is_active,
       createdAt: account.created_at
-    }))
+    };
+  }));
+  
+  res.json({
+    accounts: enrichedAccounts
   });
 }));
 
@@ -128,10 +147,18 @@ router.put('/accounts/:id/balance', asyncHandler(async (req: AuthenticatedReques
 router.get('/transactions', asyncHandler(async (req: AuthenticatedRequest, res: any) => {
   const transactions = await DatabaseService.getAllTransactions();
   
-  res.json({
-    transactions: transactions.map(transaction => ({
+  // Get enriched transaction data with user and account information
+  const enrichedTransactions = await Promise.all(transactions.map(async (transaction) => {
+    const account = await DatabaseService.getAccountById(transaction.account_id);
+    const user = account ? await DatabaseService.getUserById(account.user_id) : null;
+    
+    return {
       id: transaction.id,
       accountId: transaction.account_id,
+      userName: user ? `${user.first_name} ${user.last_name}` : '',
+      userEmail: user?.email || '',
+      accountName: account?.account_name || '',
+      accountNumber: account?.account_number || '',
       transactionType: transaction.transaction_type,
       amount: transaction.amount,
       balanceAfter: transaction.balance_after,
@@ -141,7 +168,70 @@ router.get('/transactions', asyncHandler(async (req: AuthenticatedRequest, res: 
       transactionDate: transaction.transaction_date,
       createdAt: transaction.created_at,
       createdBy: transaction.created_by
-    }))
+    };
+  }));
+  
+  res.json({
+    transactions: enrichedTransactions
+  });
+}));
+
+// Get all payees
+router.get('/payees', asyncHandler(async (req: AuthenticatedRequest, res: any) => {
+  const payees = await DatabaseService.getAllPayees();
+  
+  // Get enriched payee data with user information
+  const enrichedPayees = await Promise.all(payees.map(async (payee) => {
+    const user = await DatabaseService.getUserById(payee.user_id);
+    
+    return {
+      id: payee.id,
+      userId: payee.user_id,
+      userName: user ? `${user.first_name} ${user.last_name}` : '',
+      userEmail: user?.email || '',
+      name: payee.name,
+      accountNumber: payee.account_number,
+      routingNumber: payee.routing_number,
+      bankName: payee.bank_name,
+      payeeType: payee.payee_type,
+      phone: payee.phone,
+      email: payee.email,
+      memo: payee.memo,
+      isVerified: payee.is_verified,
+      isActive: payee.is_active,
+      createdAt: payee.created_at
+    };
+  }));
+  
+  res.json({
+    payees: enrichedPayees
+  });
+}));
+
+// Update payee status
+router.put('/payees/:id', asyncHandler(async (req: AuthenticatedRequest, res: any) => {
+  const payeeId = parseInt(req.params.id || '0');
+  const { isVerified, isActive } = req.body;
+  
+  const payee = await DatabaseService.getPayeeById(payeeId);
+  if (!payee) {
+    throw new NotFoundError('Payee not found');
+  }
+  
+  const updatedPayee = await DatabaseService.updatePayee(payeeId, {
+    is_verified: isVerified,
+    is_active: isActive
+  });
+  
+  res.json({
+    success: true,
+    message: 'Payee updated successfully',
+    payee: {
+      id: updatedPayee!.id,
+      name: updatedPayee!.name,
+      isVerified: updatedPayee!.is_verified,
+      isActive: updatedPayee!.is_active
+    }
   });
 }));
 
