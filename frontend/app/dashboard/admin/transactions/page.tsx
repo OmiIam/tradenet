@@ -40,7 +40,7 @@ export default function AdminTransactionsPage() {
   const fetchTransactions = async () => {
     try {
       // Fetch real transactions from backend
-      const response = await fetch('/api/admin/transactions', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/transactions', {
         method: 'GET',
         credentials: 'include',
         headers: {

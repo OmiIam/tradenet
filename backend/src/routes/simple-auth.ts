@@ -18,7 +18,48 @@ function loadDatabase() {
   } catch (error) {
     console.error('Error loading database:', error);
   }
-  return { users: [], accounts: [], transactions: [], payees: [], adminLogs: [], sessions: [] };
+  
+  // Create default test users if no database exists
+  const defaultUsers = [
+    {
+      id: 1,
+      email: 'admin@primeedge.com',
+      password_hash: '$2a$10$SQpCjnC3Q8P6QyBOfcqBDORSF8Ei4buZU621HqCjEcXD0cDjUdzSq',
+      first_name: 'System',
+      last_name: 'Administrator',
+      phone: '(555) 000-0000',
+      account_type: 'personal',
+      is_admin: true,
+      is_active: true,
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 2,
+      email: 'user@primeedge.com',
+      password_hash: '$2a$10$4lSMDyivmM.qdtuqbabIAeYQUcxvHW3NoHsd1kf7BE4rvOvdI865e',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(555) 123-4567',
+      account_type: 'personal',
+      is_admin: false,
+      is_active: true,
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 3,
+      email: 'business@primeedge.com',
+      password_hash: '$2a$10$R7eDV5boW5sLotfMZWp/FO99mSwBToXj2gVSQ57PgV1NRa3.L5hoi',
+      first_name: 'Sarah',
+      last_name: 'Johnson',
+      phone: '(555) 987-6543',
+      account_type: 'business',
+      is_admin: false,
+      is_active: true,
+      created_at: new Date().toISOString()
+    }
+  ];
+  
+  return { users: defaultUsers, accounts: [], transactions: [], payees: [], adminLogs: [], sessions: [] };
 }
 
 // Login endpoint
@@ -66,7 +107,7 @@ router.post('/login', async (req, res) => {
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 60 * 60 * 1000, // 1 hour
       path: '/'
     });
@@ -74,7 +115,7 @@ router.post('/login', async (req, res) => {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000,
       path: '/'
     });

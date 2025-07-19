@@ -52,7 +52,10 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:3001', 
       'http://localhost:3002',
-      'http://localhost:3003'
+      'http://localhost:3003',
+      'https://primeedgefinancebank.com',
+      'http://primeedgefinancebank.com',
+      'https://internet-banking-production-68f4.up.railway.app'
     ];
     
     // Allow requests with no origin (mobile apps, Postman, etc.)

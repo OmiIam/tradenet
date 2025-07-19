@@ -104,76 +104,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
-      {/* Enhanced Animated Background */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        style={{ 
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #3b82f6 50%, #6366f1 75%, #8b5cf6 100%)',
-          backgroundSize: '400% 400%'
-        }}
-        animate={{ 
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Animated Mesh Background */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(120,119,198,0.3),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(255,119,198,0.3),transparent_50%)]"></div>
-      </div>
-      
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute top-[-10%] left-[-10%] w-96 h-96 rounded-full bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-3xl z-0"
-        animate={{ 
-          y: [0, 40, 0], 
-          x: [0, 30, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-[-15%] right-[-10%] w-[32rem] h-[32rem] rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-3xl z-0"
-        animate={{ 
-          y: [0, -30, 0], 
-          x: [0, -40, 0],
-          scale: [1, 0.9, 1]
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-[60%] w-80 h-80 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-2xl z-0"
-        animate={{ 
-          y: [0, 20, 0], 
-          x: [0, -20, 0],
-          rotate: [0, 360]
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      />
-      
-      {/* Geometric Shapes */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-4 h-4 bg-white/20 rounded-full z-0"
-        animate={{ 
-          y: [0, -20, 0],
-          opacity: [0.3, 0.8, 0.3]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-6 h-6 bg-blue-300/30 rounded-full z-0"
-        animate={{ 
-          y: [0, 15, 0],
-          opacity: [0.4, 0.9, 0.4]
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <div className="min-h-screen relative flex items-center justify-center">
+      {/* Simplified Background */}
+      <div className="absolute inset-0 gradient-minimal" />
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
           
           {/* Left Column - Enhanced Branding */}
           <motion.div
@@ -239,29 +175,29 @@ const LoginPage = () => {
             </div>
           </motion.div>
 
-          {/* Right Column - Login Form */}
+          {/* Login Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="w-full max-w-md mx-auto"
+            className="w-full"
           >
-            <div className="card-banking p-8 shadow-2xl">
+            <div className="glass-card p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl minimal-hover">
               {/* Mobile Logo */}
-              <div className="lg:hidden mb-8 text-center">
-                <Logo size="md" variant="dark" />
+              <div className="lg:hidden mb-6 text-center">
+                <Logo size="sm" variant="light" />
               </div>
 
               {/* Login Type Toggle */}
-              <div className="mb-8">
-                <div className="flex bg-gray-100 rounded-lg p-1">
+              <div className="mb-6">
+                <div className="flex flex-col sm:flex-row bg-white/20 backdrop-blur-sm rounded-lg p-1 border border-white/30 gap-1 sm:gap-0">
                   <button
                     type="button"
                     onClick={() => setLoginType('personal')}
-                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
                       loginType === 'personal'
                         ? 'bg-white text-banking-navy shadow-sm'
-                        : 'text-banking-slate hover:text-banking-navy'
+                        : 'text-blue-200 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     <User className="w-4 h-4 inline mr-2" />
@@ -270,10 +206,10 @@ const LoginPage = () => {
                   <button
                     type="button"
                     onClick={() => setLoginType('business')}
-                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
                       loginType === 'business'
                         ? 'bg-white text-banking-navy shadow-sm'
-                        : 'text-banking-slate hover:text-banking-navy'
+                        : 'text-blue-200 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     <User className="w-4 h-4 inline mr-2" />
@@ -282,10 +218,10 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              <h2 className="text-3xl font-bold text-banking-navy mb-2">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
                 Welcome Back
               </h2>
-              <p className="text-banking-slate mb-8">
+              <p className="text-blue-200 mb-6 text-sm sm:text-base">
                 Sign in to your {loginType} banking account
               </p>
 
@@ -303,10 +239,10 @@ const LoginPage = () => {
                 </motion.div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 {/* Email Field */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-banking-navy mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
                     Email Address
                   </label>
                   <div className="relative">
@@ -317,8 +253,8 @@ const LoginPage = () => {
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent transition-all duration-200 ${
-                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full pl-10 pr-4 py-3 sm:py-4 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white transition-all duration-200 ${
+                        errors.email ? 'border-red-500' : 'border-white/30'
                       }`}
                       placeholder="Enter your email"
                     />
@@ -337,7 +273,7 @@ const LoginPage = () => {
 
                 {/* Password Field */}
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-banking-navy mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
                     Password
                   </label>
                   <div className="relative">
@@ -348,8 +284,8 @@ const LoginPage = () => {
                       type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent transition-all duration-200 ${
-                        errors.password ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full pl-10 pr-12 py-3 sm:py-4 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white transition-all duration-200 ${
+                        errors.password ? 'border-red-500' : 'border-white/30'
                       }`}
                       placeholder="Enter your password"
                     />
@@ -383,9 +319,9 @@ const LoginPage = () => {
                       onChange={handleInputChange}
                       className="w-4 h-4 text-banking-accent border-gray-300 rounded focus:ring-banking-accent"
                     />
-                    <span className="ml-2 text-sm text-banking-slate">Remember me</span>
+                    <span className="ml-2 text-sm text-blue-200">Remember me</span>
                   </label>
-                  <Link href="/forgot-password" className="text-sm text-banking-accent hover:text-banking-deepBlue">
+                  <Link href="/forgot-password" className="text-sm text-blue-300 hover:text-white">
                     Forgot password?
                   </Link>
                 </div>
@@ -394,9 +330,9 @@ const LoginPage = () => {
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
-                  whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                  className="w-full btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed py-3 sm:py-4 text-base sm:text-lg font-medium"
+                  whileHover={{ scale: isLoading ? 1 : 1.01 }}
+                  whileTap={{ scale: isLoading ? 1 : 0.99 }}
                 >
                   {isLoading ? (
                     <>
@@ -412,37 +348,11 @@ const LoginPage = () => {
                 </motion.button>
               </form>
 
-              {/* Biometric Login */}
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <div className="text-center mb-4">
-                  <span className="text-sm text-banking-slate">Or sign in with</span>
-                </div>
-                
-                <div className="flex justify-center space-x-4">
-                  <motion.button
-                    className="flex items-center space-x-2 bg-banking-accent/10 text-banking-accent px-4 py-2 rounded-lg hover:bg-banking-accent hover:text-white transition-all duration-200"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Fingerprint className="w-5 h-5" />
-                    <span>Touch ID</span>
-                  </motion.button>
-                  
-                  <motion.button
-                    className="flex items-center space-x-2 bg-banking-accent/10 text-banking-accent px-4 py-2 rounded-lg hover:bg-banking-accent hover:text-white transition-all duration-200"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Smartphone className="w-5 h-5" />
-                    <span>Face ID</span>
-                  </motion.button>
-                </div>
-              </div>
 
               {/* Sign Up Link */}
-              <div className="mt-8 text-center">
-                <span className="text-banking-slate">Don&apos;t have an account? </span>
-                <Link href="/signup" className="text-banking-accent hover:text-banking-deepBlue font-medium">
+              <div className="mt-6 sm:mt-8 text-center">
+                <span className="text-blue-200 text-sm sm:text-base">Don&apos;t have an account? </span>
+                <Link href="/signup" className="text-blue-300 hover:text-white font-medium text-sm sm:text-base">
                   Sign up here
                 </Link>
               </div>
@@ -461,10 +371,10 @@ const LoginPage = () => {
 
               {/* Help & Support */}
               <div className="mt-4 text-center">
-                <p className="text-sm text-banking-slate mb-2">Need help signing in?</p>
+                <p className="text-sm text-blue-200 mb-2">Need help signing in?</p>
                 <div className="flex justify-center space-x-4 text-sm">
-                  <Link href="/help" className="text-banking-accent hover:text-banking-deepBlue">Contact Support</Link>
-                  <Link href="/help/login" className="text-banking-accent hover:text-banking-deepBlue">Login Help</Link>
+                  <Link href="/help" className="text-blue-300 hover:text-white">Contact Support</Link>
+                  <Link href="/help/login" className="text-blue-300 hover:text-white">Login Help</Link>
                 </div>
               </div>
             </div>

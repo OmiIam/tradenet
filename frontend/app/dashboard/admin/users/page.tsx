@@ -43,7 +43,7 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     try {
       // Fetch real users from backend
-      const response = await fetch('/api/admin/users', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/users', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -67,7 +67,7 @@ export default function AdminUsersPage() {
 
   const handleToggleUserStatus = async (userId: number, currentStatus: boolean) => {
     try {
-      const response = await fetch('/api/admin/users', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/users', {
         method: 'PUT',
         credentials: 'include',
         headers: {

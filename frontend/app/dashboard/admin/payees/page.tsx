@@ -49,7 +49,7 @@ export default function AdminPayeesPage() {
   const fetchPayees = async () => {
     try {
       // Fetch real payees from backend
-      const response = await fetch('/api/admin/payees', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/payees', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -89,7 +89,7 @@ export default function AdminPayeesPage() {
     setUpdating(true);
     try {
       // Call the real backend API
-      const response = await fetch('/api/admin/payees', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/payees', {
         method: 'PUT',
         credentials: 'include',
         headers: {

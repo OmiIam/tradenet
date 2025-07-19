@@ -1,4 +1,11 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+// FORCE Railway backend for all environments to fix production issues
+const API_BASE_URL = 'https://internet-banking-production-68f4.up.railway.app/api';
+
+// Debug logging for production
+if (typeof window !== 'undefined') {
+  console.log('API Base URL (FORCED):', API_BASE_URL);
+  console.log('Environment NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+}
 
 export interface ApiResponse<T = any> {
   success?: boolean;
@@ -31,8 +38,14 @@ class ApiClient {
     };
 
     try {
+      console.log(`Making API request to: ${url}`);
+      console.log('Request config:', config);
+      
       const response = await fetch(url, config);
       const data = await response.json();
+
+      console.log(`Response status: ${response.status}`);
+      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);

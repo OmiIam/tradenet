@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('/api/dashboard/overview', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/dashboard/overview', {
         credentials: 'include'
       });
 
@@ -216,7 +216,7 @@ export default function DashboardPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-blue-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-banking-deepBlue to-banking-accent rounded-xl flex items-center justify-center">
@@ -244,7 +244,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-green-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
@@ -263,7 +263,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-red-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
@@ -282,7 +282,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-yellow-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
@@ -304,7 +304,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-blue-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-gray-900">Your Accounts</h2>
@@ -348,7 +348,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-blue-200/50 shadow-lg"
+          className="glass-card-light rounded-2xl p-6 minimal-hover"
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-gray-900">Recent Transactions</h2>
@@ -398,37 +398,37 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-blue-200/50 shadow-lg"
+        className="glass-card-light rounded-2xl p-6 minimal-hover"
       >
         <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <button className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-md transition-shadow">
+          <button className="flex flex-col items-center p-6 glass-morphism rounded-xl minimal-hover">
             <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-3">
               <ArrowRight className="w-6 h-6 text-white" />
             </div>
-            <span className="font-medium text-gray-900">Transfer Money</span>
+            <span className="font-medium text-white">Transfer Money</span>
           </button>
 
-          <button className="flex flex-col items-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-shadow">
+          <button className="flex flex-col items-center p-6 glass-morphism rounded-xl minimal-hover">
             <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-3">
               <Plus className="w-6 h-6 text-white" />
             </div>
-            <span className="font-medium text-gray-900">Add Payee</span>
+            <span className="font-medium text-white">Add Payee</span>
           </button>
 
-          <button className="flex flex-col items-center p-6 bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl hover:shadow-md transition-shadow">
+          <button className="flex flex-col items-center p-6 glass-morphism rounded-xl minimal-hover">
             <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-3">
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <span className="font-medium text-gray-900">Schedule Payment</span>
+            <span className="font-medium text-white">Schedule Payment</span>
           </button>
 
-          <button className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-md transition-shadow">
+          <button className="flex flex-col items-center p-6 glass-morphism rounded-xl minimal-hover">
             <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-3">
               <PieChart className="w-6 h-6 text-white" />
             </div>
-            <span className="font-medium text-gray-900">View Analytics</span>
+            <span className="font-medium text-white">View Analytics</span>
           </button>
         </div>
       </motion.div>

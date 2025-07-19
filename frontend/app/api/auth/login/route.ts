@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5001';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://internet-banking-production-68f4.up.railway.app';
 
 export async function POST(req: NextRequest) {
   try {

@@ -103,7 +103,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const checkAdminAuth = async () => {
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/auth/me', {
         credentials: 'include'
       });
 

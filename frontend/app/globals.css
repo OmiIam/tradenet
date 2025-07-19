@@ -30,17 +30,19 @@ body {
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
 }
 
 .glass-morphism-dark {
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
 }
 
 .gradient-banking {
@@ -51,9 +53,13 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
+.gradient-minimal {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+}
+
 @layer components {
   .btn-primary {
-    @apply bg-banking-accent hover:bg-banking-deepBlue text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105;
+    @apply bg-banking-accent hover:bg-banking-deepBlue text-white font-medium py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all duration-300 transform hover:scale-105 min-h-[44px] text-base sm:text-lg;
   }
   
   .btn-secondary {
@@ -65,7 +71,7 @@ body {
   }
   
   .card-banking {
-    @apply bg-white/90 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
   
   .hero-gradient {
@@ -79,7 +85,15 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  }
+  
+  .glass-card-light {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   }
   
   .text-glow {
@@ -87,12 +101,38 @@ body {
     padding: 0.1em 0;
   }
   
-  .floating-animation {
-    animation: float 6s ease-in-out infinite;
+  .minimal-hover {
+    transition: all 0.3s ease;
   }
   
-  .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite alternate;
+  .minimal-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+  }
+  
+  .mobile-touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .mobile-input {
+    @apply py-3 px-4 text-base;
+  }
+  
+  @media (min-width: 640px) {
+    .mobile-input {
+      @apply py-4 px-5 text-lg;
+    }
+  }
+  
+  .mobile-button {
+    @apply py-3 px-6 text-base font-medium;
+  }
+  
+  @media (min-width: 640px) {
+    .mobile-button {
+      @apply py-4 px-8 text-lg;
+    }
   }
 }
 
@@ -108,20 +148,11 @@ body {
   }
 }
 
-@keyframes float {
+@keyframes gentle-pulse {
   0%, 100% {
-    transform: translateY(0px);
+    opacity: 1;
   }
   50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+    opacity: 0.9;
   }
 }

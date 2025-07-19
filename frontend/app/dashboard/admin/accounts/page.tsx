@@ -44,7 +44,7 @@ export default function AdminAccountsPage() {
   const fetchAccounts = async () => {
     try {
       // Fetch real accounts from backend
-      const response = await fetch('/api/admin/accounts', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/accounts', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -83,7 +83,7 @@ export default function AdminAccountsPage() {
     setUpdating(true);
     try {
       // Call the real backend API
-      const response = await fetch('/api/admin/accounts', {
+      const response = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/accounts', {
         method: 'PUT',
         credentials: 'include',
         headers: {

@@ -3,14 +3,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:5001/api/:path*',
-      },
-    ]
-  },
+  // Remove API rewrites - frontend should call Railway backend directly
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/:path*',
+  //       destination: 'http://localhost:5001/api/:path*',
+  //     },
+  //   ]
+  // },
 }
 
 module.exports = nextConfig

@@ -50,7 +50,7 @@ export default function AdminOverviewPage() {
   const fetchAdminData = async () => {
     try {
       // Fetch real stats from backend
-      const statsResponse = await fetch('/api/admin/stats', {
+      const statsResponse = await fetch('https://internet-banking-production-68f4.up.railway.app/api/admin/stats', {
         method: 'GET',
         credentials: 'include',
         headers: {

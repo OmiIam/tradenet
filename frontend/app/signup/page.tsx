@@ -189,11 +189,11 @@ const SignupPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-banking-navy mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   First Name
                 </label>
                 <input
@@ -201,8 +201,8 @@ const SignupPage = () => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                    errors.firstName ? 'border-red-500' : 'border-white/30'
                   }`}
                 />
                 {errors.firstName && (
@@ -211,7 +211,7 @@ const SignupPage = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-banking-navy mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Last Name
                 </label>
                 <input
@@ -219,8 +219,8 @@ const SignupPage = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                    errors.lastName ? 'border-red-500' : 'border-white/30'
                   }`}
                 />
                 {errors.lastName && (
@@ -230,7 +230,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Email Address
               </label>
               <input
@@ -238,8 +238,8 @@ const SignupPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.email ? 'border-red-500' : 'border-white/30'
                 }`}
               />
               {errors.email && (
@@ -248,7 +248,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Phone Number
               </label>
               <input
@@ -256,8 +256,8 @@ const SignupPage = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.phone ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.phone ? 'border-red-500' : 'border-white/30'
                 }`}
               />
               {errors.phone && (
@@ -266,7 +266,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Date of Birth
               </label>
               <input
@@ -274,8 +274,8 @@ const SignupPage = () => {
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.dateOfBirth ? 'border-red-500' : 'border-white/30'
                 }`}
               />
               {errors.dateOfBirth && (
@@ -291,10 +291,10 @@ const SignupPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Street Address
               </label>
               <input
@@ -302,8 +302,8 @@ const SignupPage = () => {
                 name="address"
                 value={formData.address}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.address ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.address ? 'border-red-500' : 'border-white/30'
                 }`}
               />
               {errors.address && (
@@ -311,9 +311,9 @@ const SignupPage = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-banking-navy mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   City
                 </label>
                 <input
@@ -321,8 +321,8 @@ const SignupPage = () => {
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.city ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                    errors.city ? 'border-red-500' : 'border-white/30'
                   }`}
                 />
                 {errors.city && (
@@ -331,7 +331,7 @@ const SignupPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-banking-navy mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   State
                 </label>
                 <select
@@ -339,7 +339,7 @@ const SignupPage = () => {
                   value={formData.state}
                   onChange={handleInputChange}
                   className={`w-full px-3 py-2 border rounded-lg text-banking-slate focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.state ? 'border-red-500' : 'border-gray-300'
+                    errors.state ? 'border-red-500' : 'border-white/30'
                   }`}
                 >
                   <option value="">Select State</option>
@@ -356,7 +356,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 ZIP Code
               </label>
               <input
@@ -364,8 +364,8 @@ const SignupPage = () => {
                 name="zipCode"
                 value={formData.zipCode}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.zipCode ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.zipCode ? 'border-red-500' : 'border-white/30'
                 }`}
               />
               {errors.zipCode && (
@@ -381,13 +381,13 @@ const SignupPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Account Type
               </label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
                   <input
                     type="radio"
@@ -418,7 +418,7 @@ const SignupPage = () => {
             {formData.accountType === 'business' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-banking-navy mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Business Name
                   </label>
                   <input
@@ -426,8 +426,8 @@ const SignupPage = () => {
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                      errors.businessName ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                      errors.businessName ? 'border-red-500' : 'border-white/30'
                     }`}
                   />
                   {errors.businessName && (
@@ -436,15 +436,15 @@ const SignupPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-banking-navy mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Business Type
                   </label>
                   <select
                     name="businessType"
                     value={formData.businessType}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                      errors.businessType ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                      errors.businessType ? 'border-red-500' : 'border-white/30'
                     }`}
                   >
                     <option value="">Select Business Type</option>
@@ -459,7 +459,7 @@ const SignupPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-banking-navy mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Tax ID / EIN
                   </label>
                   <input
@@ -467,8 +467,8 @@ const SignupPage = () => {
                     name="taxId"
                     value={formData.taxId}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                      errors.taxId ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                      errors.taxId ? 'border-red-500' : 'border-white/30'
                     }`}
                   />
                   {errors.taxId && (
@@ -479,7 +479,7 @@ const SignupPage = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Initial Deposit
               </label>
               <input
@@ -487,8 +487,8 @@ const SignupPage = () => {
                 name="initialDeposit"
                 value={formData.initialDeposit}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                  errors.initialDeposit ? 'border-red-500' : 'border-gray-300'
+                className={`w-full px-3 py-2 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                  errors.initialDeposit ? 'border-red-500' : 'border-white/30'
                 }`}
                 placeholder="100.00"
                 min="100"
@@ -499,7 +499,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Password
               </label>
               <div className="relative">
@@ -508,8 +508,8 @@ const SignupPage = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 pr-10 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 pr-10 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                    errors.password ? 'border-red-500' : 'border-white/30'
                   }`}
                 />
                 <button
@@ -526,7 +526,7 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-banking-navy mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Confirm Password
               </label>
               <div className="relative">
@@ -535,8 +535,8 @@ const SignupPage = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 pr-10 border rounded-lg text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 pr-10 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-white/30'
                   }`}
                 />
                 <button
@@ -560,34 +560,34 @@ const SignupPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-banking-navy mb-2">
+              <h3 className="text-2xl font-bold text-white mb-2">
                 Review and Confirm
               </h3>
-              <p className="text-banking-slate">
+              <p className="text-blue-200">
                 Please review your information and accept the terms to complete your registration.
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 space-y-4 border border-white/20">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <span className="text-sm text-banking-slate">Name:</span>
-                  <p className="font-medium text-banking-navy">{formData.firstName} {formData.lastName}</p>
+                  <span className="text-sm text-blue-200">Name:</span>
+                  <p className="font-medium text-white">{formData.firstName} {formData.lastName}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-banking-slate">Email:</span>
-                  <p className="font-medium text-banking-navy">{formData.email}</p>
+                  <span className="text-sm text-blue-200">Email:</span>
+                  <p className="font-medium text-white">{formData.email}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-banking-slate">Account Type:</span>
-                  <p className="font-medium text-banking-navy capitalize">{formData.accountType}</p>
+                  <span className="text-sm text-blue-200">Account Type:</span>
+                  <p className="font-medium text-white capitalize">{formData.accountType}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-banking-slate">Initial Deposit:</span>
-                  <p className="font-medium text-banking-navy">${formData.initialDeposit}</p>
+                  <span className="text-sm text-blue-200">Initial Deposit:</span>
+                  <p className="font-medium text-white">${formData.initialDeposit}</p>
                 </div>
               </div>
             </div>
@@ -599,10 +599,10 @@ const SignupPage = () => {
                   name="termsAccepted"
                   checked={formData.termsAccepted}
                   onChange={handleInputChange}
-                  className="w-4 h-4 text-banking-accent border-gray-300 rounded focus:ring-banking-accent mt-1"
+                  className="w-4 h-4 text-banking-accent border-white/30 rounded focus:ring-banking-accent mt-1"
                 />
-                <span className="text-sm text-banking-slate">
-                  I agree to the <Link href="/terms" className="text-banking-accent hover:underline">Terms and Conditions</Link>
+                <span className="text-sm text-blue-200">
+                  I agree to the <Link href="/terms" className="text-blue-300 hover:text-white hover:underline">Terms and Conditions</Link>
                 </span>
               </label>
               {errors.termsAccepted && (
@@ -615,10 +615,10 @@ const SignupPage = () => {
                   name="privacyAccepted"
                   checked={formData.privacyAccepted}
                   onChange={handleInputChange}
-                  className="w-4 h-4 text-banking-accent border-gray-300 rounded focus:ring-banking-accent mt-1"
+                  className="w-4 h-4 text-banking-accent border-white/30 rounded focus:ring-banking-accent mt-1"
                 />
-                <span className="text-sm text-banking-slate">
-                  I agree to the <Link href="/privacy" className="text-banking-accent hover:underline">Privacy Policy</Link>
+                <span className="text-sm text-blue-200">
+                  I agree to the <Link href="/privacy" className="text-blue-300 hover:text-white hover:underline">Privacy Policy</Link>
                 </span>
               </label>
               {errors.privacyAccepted && (
@@ -631,9 +631,9 @@ const SignupPage = () => {
                   name="marketingAccepted"
                   checked={formData.marketingAccepted}
                   onChange={handleInputChange}
-                  className="w-4 h-4 text-banking-accent border-gray-300 rounded focus:ring-banking-accent mt-1"
+                  className="w-4 h-4 text-banking-accent border-white/30 rounded focus:ring-banking-accent mt-1"
                 />
-                <span className="text-sm text-banking-slate">
+                <span className="text-sm text-blue-200">
                   I would like to receive marketing communications and updates (optional)
                 </span>
               </label>
@@ -647,110 +647,46 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
-      {/* Enhanced Animated Background */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        style={{ 
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #3b82f6 50%, #6366f1 75%, #8b5cf6 100%)',
-          backgroundSize: '400% 400%'
-        }}
-        animate={{ 
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] 
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Animated Mesh Background */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(120,119,198,0.3),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(255,119,198,0.3),transparent_50%)]"></div>
-      </div>
-      
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute top-[-10%] left-[-10%] w-96 h-96 rounded-full bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-3xl z-0"
-        animate={{ 
-          y: [0, 40, 0], 
-          x: [0, 30, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-[-15%] right-[-10%] w-[32rem] h-[32rem] rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-3xl z-0"
-        animate={{ 
-          y: [0, -30, 0], 
-          x: [0, -40, 0],
-          scale: [1, 0.9, 1]
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-[60%] w-80 h-80 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-400/20 blur-2xl z-0"
-        animate={{ 
-          y: [0, 20, 0], 
-          x: [0, -20, 0],
-          rotate: [0, 360]
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      />
-      
-      {/* Geometric Shapes */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-4 h-4 bg-white/20 rounded-full z-0"
-        animate={{ 
-          y: [0, -20, 0],
-          opacity: [0.3, 0.8, 0.3]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/4 w-6 h-6 bg-blue-300/30 rounded-full z-0"
-        animate={{ 
-          y: [0, 15, 0],
-          opacity: [0.4, 0.9, 0.4]
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <div className="min-h-screen relative flex items-center justify-center">
+      {/* Simplified Background */}
+      <div className="absolute inset-0 gradient-minimal" />
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <Logo size="md" variant="light" />
-          <h1 className="text-3xl font-bold text-white mt-6 mb-2">
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="text-center mb-6 lg:mb-8">
+          <Logo size="sm" variant="light" />
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mt-4 lg:mt-6 mb-2">
             Create Your Account
           </h1>
-          <p className="text-blue-200">
+          <p className="text-blue-200 text-sm sm:text-base">
             Join Prime Edge Banking and start your journey to financial success
           </p>
         </div>
 
         {/* Progress Steps */}
-        <div className="mb-8">
+        <div className="mb-6 lg:mb-8">
           <div className="flex justify-center">
-            <div className="flex space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {steps.map((step, index) => (
                 <div key={step.number} className="flex items-center">
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                  <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full ${
                     currentStep >= step.number
                       ? 'bg-banking-accent text-white'
-                      : 'bg-gray-200 text-gray-500'
+                      : 'bg-white/20 text-blue-200'
                   }`}>
                     {currentStep > step.number ? (
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                     ) : (
-                      step.icon
+                      <span className="text-xs sm:text-sm font-medium">{step.number}</span>
                     )}
                   </div>
-                  <span className={`ml-2 text-sm ${
-                    currentStep >= step.number ? 'text-banking-navy' : 'text-gray-500'
+                  <span className={`ml-1 sm:ml-2 text-xs sm:text-sm hidden sm:block ${
+                    currentStep >= step.number ? 'text-white' : 'text-blue-200'
                   }`}>
                     {step.title}
                   </span>
                   {index < steps.length - 1 && (
-                    <div className={`w-8 h-0.5 mx-4 ${
-                      currentStep > step.number ? 'bg-banking-accent' : 'bg-gray-200'
+                    <div className={`w-4 sm:w-8 h-0.5 mx-2 sm:mx-4 ${
+                      currentStep > step.number ? 'bg-banking-accent' : 'bg-white/20'
                     }`} />
                   )}
                 </div>
@@ -760,7 +696,7 @@ const SignupPage = () => {
         </div>
 
         {/* Form */}
-        <div className="card-banking p-8 max-w-2xl mx-auto">
+        <div className="glass-card p-4 sm:p-6 lg:p-8 max-w-full lg:max-w-2xl mx-auto rounded-2xl minimal-hover">
           {/* General Error Message */}
           {errors.general && (
             <motion.div
@@ -781,15 +717,15 @@ const SignupPage = () => {
             </AnimatePresence>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-8">
+            <div className="flex justify-between mt-6 lg:mt-8 gap-4">
               <div>
                 {currentStep > 1 && (
                   <motion.button
                     type="button"
                     onClick={handleBack}
-                    className="flex items-center space-x-2 px-6 py-3 border border-gray-300 rounded-lg text-banking-slate hover:bg-gray-50 transition-colors duration-200"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center space-x-2 px-4 sm:px-6 py-3 sm:py-4 glass-morphism rounded-xl text-white hover:bg-white/20 transition-colors duration-200 text-sm sm:text-base"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                   >
                     <ArrowLeft className="w-5 h-5" />
                     <span>Back</span>
@@ -802,9 +738,9 @@ const SignupPage = () => {
                   <motion.button
                     type="button"
                     onClick={handleNext}
-                    className="flex items-center space-x-2 btn-primary"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center space-x-2 btn-primary px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                   >
                     <span>Next</span>
                     <ArrowRight className="w-5 h-5" />
@@ -813,9 +749,9 @@ const SignupPage = () => {
                   <motion.button
                     type="submit"
                     disabled={isLoading}
-                    className="flex items-center space-x-2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={{ scale: isLoading ? 1 : 1.02 }}
-                    whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                    className="flex items-center space-x-2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base"
+                    whileHover={{ scale: isLoading ? 1 : 1.01 }}
+                    whileTap={{ scale: isLoading ? 1 : 0.99 }}
                   >
                     {isLoading ? (
                       <>
@@ -835,9 +771,9 @@ const SignupPage = () => {
           </form>
 
           {/* Sign In Link */}
-          <div className="mt-8 text-center">
-            <span className="text-blue-200">Already have an account? </span>
-            <Link href="/login" className="text-blue-300 hover:text-white font-medium">
+          <div className="mt-6 lg:mt-8 text-center">
+            <span className="text-blue-200 text-sm sm:text-base">Already have an account? </span>
+            <Link href="/login" className="text-blue-300 hover:text-white font-medium text-sm sm:text-base">
               Sign in here
             </Link>
           </div>
