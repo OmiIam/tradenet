@@ -72,6 +72,50 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', simpleAuthRoutes);
 
+// Dashboard overview endpoint
+app.get('/api/dashboard/overview', (req, res) => {
+  // Simple mock dashboard data for the simple server
+  const mockData = {
+    user: {
+      id: 1,
+      email: 'admin@primeedge.com',
+      firstName: 'System',
+      lastName: 'Administrator',
+      isAdmin: true,
+      accountType: 'personal'
+    },
+    accounts: [
+      {
+        id: 1,
+        accountNumber: '****1234',
+        accountType: 'Checking',
+        accountName: 'Primary Checking',
+        balance: 15420.50,
+        availableBalance: 15420.50
+      }
+    ],
+    totalBalance: 15420.50,
+    recentTransactions: [
+      {
+        id: 1,
+        accountId: 1,
+        transactionType: 'credit',
+        amount: 2500.00,
+        description: 'Salary Deposit',
+        category: 'Income',
+        status: 'completed',
+        transactionDate: new Date().toISOString(),
+        createdAt: new Date().toISOString()
+      }
+    ],
+    monthlySpending: 3250.75,
+    monthlyIncome: 5500.00,
+    pendingTransactions: 0
+  };
+  
+  res.json(mockData);
+});
+
 // API info endpoint
 app.get('/api', (req, res) => {
   res.json({
@@ -80,6 +124,7 @@ app.get('/api', (req, res) => {
     description: 'Production-grade banking backend API',
     endpoints: {
       auth: '/api/auth',
+      dashboard: '/api/dashboard/overview'
     },
     health: '/health'
   });
