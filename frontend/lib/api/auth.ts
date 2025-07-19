@@ -43,6 +43,8 @@ export interface AuthUser {
 export interface LoginResponse {
   success: boolean;
   user: AuthUser;
+  accessToken?: string;
+  refreshToken?: string;
   expiresAt: number;
 }
 
@@ -65,7 +67,17 @@ export interface RefreshResponse {
 export const authApi = {
   // Login user
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    return apiClient.post<LoginResponse>('/auth/login', credentials);
+    const response = await apiClient.post<LoginResponse>('/auth/login', credentials);
+    
+    // Store tokens in localStorage for cross-origin authentication
+    if (response.accessToken && typeof window !== 'undefined') {
+      localStorage.setItem('accessToken', response.accessToken);
+      if (response.refreshToken) {
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }
+    }
+    
+    return response;
   },
 
   // Register new user

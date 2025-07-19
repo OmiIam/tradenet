@@ -130,6 +130,8 @@ router.post('/login', async (req, res) => {
         isAdmin: user.is_admin,
         accountType: user.account_type
       },
+      accessToken,
+      refreshToken,
       expiresAt: Date.now() + (60 * 60 * 1000)
     });
 
@@ -144,7 +146,7 @@ router.get('/me', (req, res) => {
   try {
     let token: string | undefined;
 
-    // Check Authorization header first
+    // Check Authorization header first (for cross-origin requests)
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
       token = authHeader.substring(7);

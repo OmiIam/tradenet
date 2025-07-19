@@ -28,9 +28,13 @@ class ApiClient {
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     
+    // Get access token from localStorage for cross-origin requests
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
         ...options.headers,
       },
       credentials: 'include', // Include cookies for authentication
