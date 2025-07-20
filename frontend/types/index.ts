@@ -565,4 +565,55 @@ export interface SortOptions {
   direction: 'asc' | 'desc';
 }
 
+// Chat Support Types
+export interface ChatSession {
+  id: number;
+  userId: number;
+  agentId?: number;
+  status: 'waiting' | 'active' | 'resolved' | 'closed';
+  subject?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  createdAt: string;
+  updatedAt: string;
+  closedAt?: string;
+}
+
+export interface ChatMessage {
+  id: number;
+  sessionId: number;
+  senderId: number;
+  senderType: 'user' | 'agent' | 'system';
+  messageText: string;
+  messageType: 'text' | 'system' | 'file';
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface ChatAgentStatus {
+  id: number;
+  agentId: number;
+  status: 'online' | 'busy' | 'offline';
+  maxConcurrentChats: number;
+  currentChatCount: number;
+  lastActivity: string;
+}
+
+export interface CreateChatSession {
+  subject?: string;
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
+}
+
+export interface SendChatMessage {
+  sessionId: number;
+  messageText: string;
+}
+
+export interface ChatNotification {
+  id: string;
+  sessionId: number;
+  type: 'new_message' | 'agent_joined' | 'session_closed';
+  message: string;
+  timestamp: string;
+}
+
 // Export existing interfaces for backward compatibility

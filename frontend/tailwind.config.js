@@ -9,27 +9,19 @@ module.exports = {
     extend: {
       colors: {
         banking: {
-          primary: '#1e3a8a',    // Deep navy for headers and primary actions
+          primary: '#1e3a8a',     // Deep navy for headers and primary actions
           secondary: '#3b82f6',   // Clean blue for accents and links
-          text: {
-            primary: '#0f172a',   // High contrast dark text
-            secondary: '#475569', // Medium gray for secondary text
-            muted: '#64748b',     // Light gray for muted text
-          },
-          background: {
-            primary: '#ffffff',   // Pure white
-            secondary: '#f8fafc', // Subtle off-white
-            accent: '#f1f5f9',    // Light accent background
-          },
-          border: {
-            light: '#e2e8f0',     // Light border
-            medium: '#cbd5e1',    // Medium border
-            dark: '#94a3b8',      // Dark border
-          },
+          accent: '#3b82f6',      // Clean blue accent
+          deepBlue: '#1e3a8a',    // Deep blue
+          navy: '#1e3a8a',        // Banking navy
+          slate: '#475569',       // Slate gray
+          warm: '#f8fafc',        // Warm background
           success: '#059669',     // Accessible green
           warning: '#d97706',     // Accessible orange
           error: '#dc2626',       // Accessible red
-        }
+        },
+        'banking-accent': '#3b82f6', // Clean blue accent
+        'banking-deepBlue': '#1e3a8a', // Deep blue
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

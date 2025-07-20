@@ -4,7 +4,7 @@ import { logger } from '../config/logger';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
-    id: string;
+    id: number;
     email: string;
     firstName: string;
     lastName: string;

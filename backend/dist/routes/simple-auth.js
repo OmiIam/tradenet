@@ -155,6 +155,107 @@ router.get('/me', (req, res) => {
         return res.status(401).json({ error: 'Invalid token' });
     }
 });
+router.post('/register', async (req, res) => {
+    try {
+        const { email, password, firstName, lastName, phone, dateOfBirth, address, city, state, zipCode, accountType = 'personal' } = req.body;
+        if (!email || !password || !firstName || !lastName) {
+            return res.status(400).json({
+                error: 'Email, password, first name, and last name are required'
+            });
+        }
+        if (password.length < 8) {
+            return res.status(400).json({
+                error: 'Password must be at least 8 characters long'
+            });
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                error: 'Invalid email format'
+            });
+        }
+        const db = loadDatabase();
+        const existingUser = db.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+        if (existingUser) {
+            return res.status(409).json({
+                error: 'An account with this email already exists'
+            });
+        }
+        const hashedPassword = await bcryptjs_1.default.hash(password, 10);
+        const newUser = {
+            id: Math.max(...db.users.map((u) => u.id), 0) + 1,
+            email: email.toLowerCase(),
+            password_hash: hashedPassword,
+            first_name: firstName,
+            last_name: lastName,
+            phone: phone || null,
+            date_of_birth: dateOfBirth || null,
+            address: address || null,
+            city: city || null,
+            state: state || null,
+            zip_code: zipCode || null,
+            account_type: accountType,
+            is_admin: false,
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+        db.users.push(newUser);
+        try {
+            if (fs_1.default.existsSync(path_1.default.dirname(DB_PATH))) {
+                fs_1.default.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+            }
+        }
+        catch (error) {
+            console.log('Note: Could not save to persistent database (using in-memory)');
+        }
+        const accessToken = jsonwebtoken_1.default.sign({
+            id: newUser.id,
+            email: newUser.email,
+            firstName: newUser.first_name,
+            lastName: newUser.last_name,
+            isAdmin: newUser.is_admin,
+            accountType: newUser.account_type
+        }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+        const refreshToken = jsonwebtoken_1.default.sign({ userId: newUser.id }, process.env.JWT_REFRESH_SECRET || 'refresh-secret', { expiresIn: '7d' });
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 60 * 60 * 1000,
+            path: '/'
+        });
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/'
+        });
+        res.status(201).json({
+            success: true,
+            message: 'Account created successfully',
+            user: {
+                id: newUser.id,
+                email: newUser.email,
+                firstName: newUser.first_name,
+                lastName: newUser.last_name,
+                phone: newUser.phone,
+                accountType: newUser.account_type,
+                isAdmin: newUser.is_admin,
+                createdAt: newUser.created_at
+            },
+            accessToken,
+            expiresAt: Date.now() + (60 * 60 * 1000)
+        });
+    }
+    catch (error) {
+        console.error('Registration error:', error);
+        return res.status(500).json({
+            error: 'Registration failed. Please try again.'
+        });
+    }
+});
 router.post('/logout', (req, res) => {
     res.clearCookie('accessToken', { path: '/' });
     res.clearCookie('refreshToken', { path: '/' });

@@ -30,6 +30,17 @@ export class AuthenticationError extends Error {
   }
 }
 
+export class ForbiddenError extends Error {
+  statusCode = 403;
+  isOperational = true;
+  code = 'FORBIDDEN_ERROR';
+
+  constructor(message: string = 'Access forbidden') {
+    super(message);
+    this.name = 'ForbiddenError';
+  }
+}
+
 export class AuthorizationError extends Error {
   statusCode = 403;
   isOperational = true;

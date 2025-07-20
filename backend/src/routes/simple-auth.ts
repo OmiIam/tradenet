@@ -187,6 +187,150 @@ router.get('/me', (req, res) => {
   }
 });
 
+// Register endpoint
+router.post('/register', async (req, res) => {
+  try {
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+      dateOfBirth,
+      address,
+      city,
+      state,
+      zipCode,
+      accountType = 'personal'
+    } = req.body;
+
+    // Validation
+    if (!email || !password || !firstName || !lastName) {
+      return res.status(400).json({ 
+        error: 'Email, password, first name, and last name are required' 
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ 
+        error: 'Password must be at least 8 characters long' 
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        error: 'Invalid email format' 
+      });
+    }
+
+    const db = loadDatabase();
+    
+    // Check if user already exists
+    const existingUser = db.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+    if (existingUser) {
+      return res.status(409).json({ 
+        error: 'An account with this email already exists' 
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
+    const newUser = {
+      id: Math.max(...db.users.map((u: any) => u.id), 0) + 1,
+      email: email.toLowerCase(),
+      password_hash: hashedPassword,
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone || null,
+      date_of_birth: dateOfBirth || null,
+      address: address || null,
+      city: city || null,
+      state: state || null,
+      zip_code: zipCode || null,
+      account_type: accountType,
+      is_admin: false,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    // Add user to database
+    db.users.push(newUser);
+
+    // Save database (if file exists)
+    try {
+      if (fs.existsSync(path.dirname(DB_PATH))) {
+        fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+      }
+    } catch (error) {
+      console.log('Note: Could not save to persistent database (using in-memory)');
+    }
+
+    // Generate tokens for immediate login
+    const accessToken = jwt.sign(
+      {
+        id: newUser.id,
+        email: newUser.email,
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        isAdmin: newUser.is_admin,
+        accountType: newUser.account_type
+      },
+      process.env.JWT_SECRET || 'secret',
+      { expiresIn: '1h' }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId: newUser.id },
+      process.env.JWT_REFRESH_SECRET || 'refresh-secret',
+      { expiresIn: '7d' }
+    );
+
+    // Set httpOnly cookies
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 60 * 60 * 1000, // 1 hour
+      path: '/'
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/'
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Account created successfully',
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        phone: newUser.phone,
+        accountType: newUser.account_type,
+        isAdmin: newUser.is_admin,
+        createdAt: newUser.created_at
+      },
+      accessToken,
+      expiresAt: Date.now() + (60 * 60 * 1000)
+    });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    return res.status(500).json({ 
+      error: 'Registration failed. Please try again.' 
+    });
+  }
+});
+
 // Logout endpoint
 router.post('/logout', (req, res) => {
   res.clearCookie('accessToken', { path: '/' });

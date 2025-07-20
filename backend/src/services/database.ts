@@ -72,6 +72,38 @@ export interface Payee {
   updated_at: string;
 }
 
+export interface ChatSession {
+  id: number;
+  user_id: number;
+  agent_id?: number;
+  status: 'waiting' | 'active' | 'resolved' | 'closed';
+  subject?: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  created_at: string;
+  updated_at: string;
+  closed_at?: string;
+}
+
+export interface ChatMessage {
+  id: number;
+  session_id: number;
+  sender_id: number;
+  sender_type: 'user' | 'agent' | 'system';
+  message_text: string;
+  message_type: 'text' | 'system' | 'file';
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface ChatAgentStatus {
+  id: number;
+  agent_id: number;
+  status: 'online' | 'busy' | 'offline';
+  max_concurrent_chats: number;
+  current_chat_count: number;
+  last_activity: string;
+}
+
 export class DatabaseService {
   private db: SQLiteDatabase;
 
@@ -426,6 +458,222 @@ export class DatabaseService {
       return result.count || 0;
     } catch (error) {
       logger.error('Error getting pending transactions count:', error);
+      throw error;
+    }
+  }
+
+  // Chat operations
+  async createChatSession(userId: number, subject?: string): Promise<ChatSession> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        INSERT INTO chat_sessions (user_id, subject, status, priority)
+        VALUES (?, ?, 'waiting', 'medium')
+      `);
+      
+      const result = stmt.run(userId, subject || null);
+      const session = await this.getChatSession(result.lastInsertRowid as number);
+      if (!session) {
+        throw new Error('Failed to create chat session');
+      }
+      return session;
+    } catch (error) {
+      logger.error('Error creating chat session:', error);
+      throw error;
+    }
+  }
+
+  async getChatSession(sessionId: number): Promise<ChatSession | null> {
+    try {
+      const stmt = this.db.getDatabase().prepare('SELECT * FROM chat_sessions WHERE id = ?');
+      return stmt.get(sessionId) as ChatSession || null;
+    } catch (error) {
+      logger.error('Error getting chat session:', error);
+      throw error;
+    }
+  }
+
+  async getUserChatSessions(userId: number): Promise<ChatSession[]> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        SELECT * FROM chat_sessions 
+        WHERE user_id = ? 
+        ORDER BY updated_at DESC
+      `);
+      return stmt.all(userId) as ChatSession[];
+    } catch (error) {
+      logger.error('Error getting user chat sessions:', error);
+      throw error;
+    }
+  }
+
+  async getActiveChatSessions(): Promise<ChatSession[]> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        SELECT * FROM chat_sessions 
+        WHERE status IN ('waiting', 'active') 
+        ORDER BY created_at ASC
+      `);
+      return stmt.all() as ChatSession[];
+    } catch (error) {
+      logger.error('Error getting active chat sessions:', error);
+      throw error;
+    }
+  }
+
+  async updateChatSession(sessionId: number, updates: Partial<ChatSession>): Promise<ChatSession | null> {
+    try {
+      const fields = [];
+      const values = [];
+      
+      if (updates.status) {
+        fields.push('status = ?');
+        values.push(updates.status);
+      }
+      if (updates.agent_id !== undefined) {
+        fields.push('agent_id = ?');
+        values.push(updates.agent_id);
+      }
+      if (updates.priority) {
+        fields.push('priority = ?');
+        values.push(updates.priority);
+      }
+      if (updates.closed_at) {
+        fields.push('closed_at = ?');
+        values.push(updates.closed_at);
+      }
+      
+      fields.push('updated_at = CURRENT_TIMESTAMP');
+      values.push(sessionId);
+
+      const stmt = this.db.getDatabase().prepare(`
+        UPDATE chat_sessions 
+        SET ${fields.join(', ')}
+        WHERE id = ?
+      `);
+      
+      stmt.run(...values);
+      return this.getChatSession(sessionId);
+    } catch (error) {
+      logger.error('Error updating chat session:', error);
+      throw error;
+    }
+  }
+
+  async addChatMessage(sessionId: number, senderId: number, senderType: string, messageText: string): Promise<ChatMessage> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        INSERT INTO chat_messages (session_id, sender_id, sender_type, message_text, message_type)
+        VALUES (?, ?, ?, ?, 'text')
+      `);
+      
+      const result = stmt.run(sessionId, senderId, senderType, messageText);
+      
+      // Update session timestamp
+      const updateStmt = this.db.getDatabase().prepare(`
+        UPDATE chat_sessions 
+        SET updated_at = CURRENT_TIMESTAMP 
+        WHERE id = ?
+      `);
+      updateStmt.run(sessionId);
+      
+      const message = await this.getChatMessage(result.lastInsertRowid as number);
+      if (!message) {
+        throw new Error('Failed to create chat message');
+      }
+      return message;
+    } catch (error) {
+      logger.error('Error adding chat message:', error);
+      throw error;
+    }
+  }
+
+  async getChatMessage(messageId: number): Promise<ChatMessage | null> {
+    try {
+      const stmt = this.db.getDatabase().prepare('SELECT * FROM chat_messages WHERE id = ?');
+      return stmt.get(messageId) as ChatMessage || null;
+    } catch (error) {
+      logger.error('Error getting chat message:', error);
+      throw error;
+    }
+  }
+
+  async getChatMessages(sessionId: number): Promise<ChatMessage[]> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        SELECT * FROM chat_messages 
+        WHERE session_id = ? 
+        ORDER BY created_at ASC
+      `);
+      return stmt.all(sessionId) as ChatMessage[];
+    } catch (error) {
+      logger.error('Error getting chat messages:', error);
+      throw error;
+    }
+  }
+
+  async markMessagesAsRead(sessionId: number, userId: number): Promise<void> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        UPDATE chat_messages 
+        SET is_read = 1 
+        WHERE session_id = ? AND sender_id != ? AND is_read = 0
+      `);
+      stmt.run(sessionId, userId);
+    } catch (error) {
+      logger.error('Error marking messages as read:', error);
+      throw error;
+    }
+  }
+
+  async getUnreadMessageCount(sessionId: number, userId: number): Promise<number> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        SELECT COUNT(*) as count 
+        FROM chat_messages 
+        WHERE session_id = ? AND sender_id != ? AND is_read = 0
+      `);
+      const result = stmt.get(sessionId, userId) as { count: number };
+      return result.count || 0;
+    } catch (error) {
+      logger.error('Error getting unread message count:', error);
+      throw error;
+    }
+  }
+
+  async updateAgentStatus(agentId: number, status: string): Promise<void> {
+    try {
+      const existingStmt = this.db.getDatabase().prepare('SELECT * FROM chat_agent_status WHERE agent_id = ?');
+      const existing = existingStmt.get(agentId);
+      
+      if (existing) {
+        const updateStmt = this.db.getDatabase().prepare(`
+          UPDATE chat_agent_status 
+          SET status = ?, last_activity = CURRENT_TIMESTAMP 
+          WHERE agent_id = ?
+        `);
+        updateStmt.run(status, agentId);
+      } else {
+        const insertStmt = this.db.getDatabase().prepare(`
+          INSERT INTO chat_agent_status (agent_id, status, max_concurrent_chats, current_chat_count)
+          VALUES (?, ?, 3, 0)
+        `);
+        insertStmt.run(agentId, status);
+      }
+    } catch (error) {
+      logger.error('Error updating agent status:', error);
+      throw error;
+    }
+  }
+
+  async getAvailableAgents(): Promise<ChatAgentStatus[]> {
+    try {
+      const stmt = this.db.getDatabase().prepare(`
+        SELECT * FROM chat_agent_status 
+        WHERE status = 'online' AND current_chat_count < max_concurrent_chats
+      `);
+      return stmt.all() as ChatAgentStatus[];
+    } catch (error) {
+      logger.error('Error getting available agents:', error);
       throw error;
     }
   }

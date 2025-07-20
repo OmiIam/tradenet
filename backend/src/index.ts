@@ -1,4 +1,6 @@
 import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -17,11 +19,15 @@ import accountRoutes from './routes/accounts';
 import transactionRoutes from './routes/transactions';
 import payeeRoutes from './routes/payees';
 import adminRoutes from './routes/admin';
+import chatRoutes from './routes/chat';
+import { authenticateSocket } from './middleware/socketAuth';
+import ChatSocketService from './services/chatSocketService';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5001;
 
 // Trust proxy for accurate IP addresses
@@ -80,6 +86,20 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: corsOptions,
+  pingTimeout: 60000,
+  pingInterval: 25000,
+  transports: ['websocket', 'polling']
+});
+
+// WebSocket authentication middleware
+io.use(authenticateSocket);
+
+// Initialize chat WebSocket service
+const chatSocketService = new ChatSocketService(io);
+
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -117,6 +137,7 @@ app.use('/api/accounts', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/payees', payeeRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Dashboard overview endpoint
 app.get('/api/dashboard/overview', authenticateToken, asyncHandler(async (req: any, res: any) => {
@@ -228,10 +249,11 @@ process.on('uncaughtException', (error: Error) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
   logger.info(`📚 API documentation available at http://localhost:${PORT}/api`);
   logger.info(`🔍 Health check available at http://localhost:${PORT}/health`);
+  logger.info(`🔌 WebSocket server ready for real-time chat`);
 });
 
 export default app;

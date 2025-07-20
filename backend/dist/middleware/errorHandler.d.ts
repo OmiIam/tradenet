@@ -16,6 +16,12 @@ export declare class AuthenticationError extends Error {
     code: string;
     constructor(message?: string);
 }
+export declare class ForbiddenError extends Error {
+    statusCode: number;
+    isOperational: boolean;
+    code: string;
+    constructor(message?: string);
+}
 export declare class AuthorizationError extends Error {
     statusCode: number;
     isOperational: boolean;

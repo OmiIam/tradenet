@@ -283,45 +283,47 @@ export default function AccountsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              relative overflow-hidden bg-gradient-to-br ${getAccountTypeColor(account.accountType)} 
-              rounded-2xl p-6 text-white shadow-xl cursor-pointer
-              ${selectedAccount?.id === account.id ? 'ring-4 ring-white/50 scale-105' : 'hover:scale-102'}
+              relative overflow-hidden bg-white border-2 border-gray-200
+              rounded-2xl p-6 text-gray-900 shadow-xl cursor-pointer
+              ${selectedAccount?.id === account.id ? 'ring-4 ring-blue-500/50 scale-105 border-blue-300' : 'hover:scale-102 hover:border-gray-300'}
               transition-all duration-300
             `}
             onClick={() => setSelectedAccount(account)}
           >
             <div className="flex items-center justify-between mb-6">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                {getAccountIcon(account.accountType)}
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${getAccountTypeColor(account.accountType)}`}>
+                <div className="text-white">
+                  {getAccountIcon(account.accountType)}
+                </div>
               </div>
-              <button className="p-2 hover:bg-white/20 rounded-lg transition-colors">
-                <MoreVertical className="w-5 h-5" />
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <MoreVertical className="w-5 h-5 text-gray-600" />
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <h3 className="text-xl font-bold">{account.accountName}</h3>
-                <p className="text-white/80 font-mono text-sm">
+                <h3 className="text-xl font-bold text-gray-900">{account.accountName}</h3>
+                <p className="text-gray-600 font-mono text-sm">
                   {account.accountNumber}
                 </p>
               </div>
 
               <div>
-                <p className="text-white/80 text-sm mb-1">Available Balance</p>
-                <p className="text-3xl font-bold">
+                <p className="text-gray-600 text-sm mb-1">Available Balance</p>
+                <p className="text-3xl font-bold text-gray-900">
                   {balanceVisible ? formatCurrency(account.availableBalance) : '••••••'}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-white/20">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                 <div>
-                  <p className="text-white/80 text-xs">Interest Rate</p>
-                  <p className="font-medium">{account.interestRate}% APY</p>
+                  <p className="text-gray-500 text-xs">Interest Rate</p>
+                  <p className="font-medium text-gray-900">{account.interestRate}% APY</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-white/80 text-xs">Account Type</p>
-                  <p className="font-medium capitalize">{account.accountType}</p>
+                  <p className="text-gray-500 text-xs">Account Type</p>
+                  <p className="font-medium capitalize text-gray-900">{account.accountType}</p>
                 </div>
               </div>
             </div>

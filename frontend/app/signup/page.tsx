@@ -21,7 +21,9 @@ import {
   CreditCard
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
+import { authApi } from '@/lib/api/auth';
 
 interface FormData {
   // Personal Information
@@ -55,6 +57,7 @@ interface FormData {
 }
 
 const SignupPage = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -166,15 +169,32 @@ const SignupPage = () => {
     if (validateStep(currentStep)) {
       setIsLoading(true);
       try {
-        // TODO: Implement actual registration API call
-        console.log('Form submitted:', formData);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        // For now, just show success message
-        alert('Account created successfully! Please check your email for verification.');
-      } catch (error) {
+        const registrationData = {
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+          accountType: formData.accountType
+        };
+
+        const response = await authApi.register(registrationData);
+        
+        // Store access token if provided (for immediate login)
+        if (response.user && typeof window !== 'undefined') {
+          // Registration was successful, redirect to dashboard
+          router.push('/dashboard');
+        }
+      } catch (error: any) {
         console.error('Registration failed:', error);
-        setErrors({ general: 'Registration failed. Please try again.' });
+        setErrors({ 
+          general: error.message || 'Registration failed. Please try again.' 
+        });
       } finally {
         setIsLoading(false);
       }

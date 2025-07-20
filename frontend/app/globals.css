@@ -54,7 +54,7 @@ body {
 }
 
 .gradient-minimal {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
 }
 
 @layer components {
@@ -63,7 +63,7 @@ body {
   }
   
   .btn-secondary {
-    @apply border-2 border-white text-white hover:bg-white hover:text-banking-slate font-medium py-3 px-6 rounded-lg transition-all duration-300;
+    @apply border-2 border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 font-medium py-3 px-6 rounded-lg transition-all duration-300;
   }
   
   .btn-secondary-dark {
@@ -75,7 +75,7 @@ body {
   }
   
   .hero-gradient {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 25%, #3b82f6 50%, #6366f1 75%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
     background-size: 400% 400%;
     animation: gradient-shift 20s ease infinite;
   }

@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const http_1 = __importDefault(require("http"));
+const socket_io_1 = require("socket.io");
 const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const compression_1 = __importDefault(require("compression"));
@@ -20,8 +22,12 @@ const accounts_1 = __importDefault(require("./routes/accounts"));
 const transactions_1 = __importDefault(require("./routes/transactions"));
 const payees_1 = __importDefault(require("./routes/payees"));
 const admin_1 = __importDefault(require("./routes/admin"));
+const chat_1 = __importDefault(require("./routes/chat"));
+const socketAuth_1 = require("./middleware/socketAuth");
+const chatSocketService_1 = __importDefault(require("./services/chatSocketService"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+const server = http_1.default.createServer(app);
 const PORT = process.env.PORT || 5001;
 app.set('trust proxy', 1);
 try {
@@ -70,6 +76,14 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use((0, cors_1.default)(corsOptions));
+const io = new socket_io_1.Server(server, {
+    cors: corsOptions,
+    pingTimeout: 60000,
+    pingInterval: 25000,
+    transports: ['websocket', 'polling']
+});
+io.use(socketAuth_1.authenticateSocket);
+const chatSocketService = new chatSocketService_1.default(io);
 app.use(express_1.default.json({ limit: '10mb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
 app.use((0, cookie_parser_1.default)());
@@ -98,6 +112,7 @@ app.use('/api/accounts', accounts_1.default);
 app.use('/api/transactions', transactions_1.default);
 app.use('/api/payees', payees_1.default);
 app.use('/api/admin', admin_1.default);
+app.use('/api/chat', chat_1.default);
 app.get('/api/dashboard/overview', auth_1.authenticateToken, (0, errorHandler_1.asyncHandler)(async (req, res) => {
     const userId = req.user.id;
     const user = await database_1.default.getUserById(userId);
@@ -178,10 +193,11 @@ process.on('uncaughtException', (error) => {
     logger_1.logger.error('Uncaught Exception:', error);
     process.exit(1);
 });
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     logger_1.logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
     logger_1.logger.info(`📚 API documentation available at http://localhost:${PORT}/api`);
     logger_1.logger.info(`🔍 Health check available at http://localhost:${PORT}/health`);
+    logger_1.logger.info(`🔌 WebSocket server ready for real-time chat`);
 });
 exports.default = app;
 //# sourceMappingURL=index.js.map

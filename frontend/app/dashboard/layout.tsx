@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { AuthUser } from '@/types';
 import { authApi } from '@/lib/api/auth';
+import ChatWidget from '@/components/chat/ChatWidget';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -234,6 +235,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </main>
       </div>
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }

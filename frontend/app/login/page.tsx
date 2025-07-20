@@ -116,7 +116,7 @@ const LoginPage = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="hidden lg:block text-white"
+            className="hidden lg:block text-gray-900"
           >
             <motion.div 
               className="mb-8"
@@ -124,7 +124,7 @@ const LoginPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <Logo size="lg" variant="light" />
+              <Logo size="lg" variant="dark" />
             </motion.div>
             
             <motion.h1 
@@ -134,17 +134,17 @@ const LoginPage = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               Secure Banking
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-blue-100 text-glow">at Your Fingertips</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800">at Your Fingertips</span>
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-blue-100 mb-12 leading-relaxed font-light"
+              className="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed font-light"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               Access your accounts safely and securely with our{' '}
-              <span className="font-semibold text-white">advanced authentication system</span>.
+              <span className="font-semibold text-gray-900">advanced authentication system</span>.
             </motion.p>
             
             <div className="space-y-6">
@@ -161,14 +161,14 @@ const LoginPage = () => {
                   transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
                   className="flex items-start space-x-4 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-all duration-300 backdrop-blur-sm">
-                    <div className="text-white group-hover:text-blue-200 transition-colors duration-300">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-all duration-300 border border-blue-200">
+                    <div className="text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
                       {feature.icon}
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-white font-bold text-lg mb-1">{feature.text}</h3>
-                    <p className="text-blue-200 text-sm">{feature.desc}</p>
+                    <h3 className="text-gray-900 font-bold text-lg mb-1">{feature.text}</h3>
+                    <p className="text-gray-600 text-sm">{feature.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -185,19 +185,19 @@ const LoginPage = () => {
             <div className="glass-card p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl minimal-hover">
               {/* Mobile Logo */}
               <div className="lg:hidden mb-6 text-center">
-                <Logo size="sm" variant="light" />
+                <Logo size="sm" variant="dark" />
               </div>
 
               {/* Login Type Toggle */}
               <div className="mb-6">
-                <div className="flex flex-col sm:flex-row bg-white/20 backdrop-blur-sm rounded-lg p-1 border border-white/30 gap-1 sm:gap-0">
+                <div className="flex flex-col sm:flex-row bg-gray-100 rounded-lg p-1 border border-gray-300 gap-1 sm:gap-0">
                   <button
                     type="button"
                     onClick={() => setLoginType('personal')}
                     className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
                       loginType === 'personal'
                         ? 'bg-white text-banking-navy shadow-sm'
-                        : 'text-blue-200 hover:text-white hover:bg-white/10'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                     }`}
                   >
                     <User className="w-4 h-4 inline mr-2" />
@@ -209,7 +209,7 @@ const LoginPage = () => {
                     className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
                       loginType === 'business'
                         ? 'bg-white text-banking-navy shadow-sm'
-                        : 'text-blue-200 hover:text-white hover:bg-white/10'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                     }`}
                   >
                     <User className="w-4 h-4 inline mr-2" />
@@ -218,10 +218,10 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                 Welcome Back
               </h2>
-              <p className="text-blue-200 mb-6 text-sm sm:text-base">
+              <p className="text-gray-600 mb-6 text-sm sm:text-base">
                 Sign in to your {loginType} banking account
               </p>
 
@@ -242,7 +242,7 @@ const LoginPage = () => {
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 {/* Email Field */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address
                   </label>
                   <div className="relative">
@@ -253,8 +253,8 @@ const LoginPage = () => {
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 sm:py-4 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white transition-all duration-200 ${
-                        errors.email ? 'border-red-500' : 'border-white/30'
+                      className={`w-full pl-10 pr-4 py-3 sm:py-4 border rounded-lg bg-white text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:border-transparent transition-all duration-200 ${
+                        errors.email ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Enter your email"
                     />
@@ -273,7 +273,7 @@ const LoginPage = () => {
 
                 {/* Password Field */}
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                     Password
                   </label>
                   <div className="relative">
@@ -284,8 +284,8 @@ const LoginPage = () => {
                       type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 sm:py-4 border rounded-lg bg-white/90 text-banking-slate placeholder:text-banking-slate/60 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:bg-white transition-all duration-200 ${
-                        errors.password ? 'border-red-500' : 'border-white/30'
+                      className={`w-full pl-10 pr-12 py-3 sm:py-4 border rounded-lg bg-white text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-banking-accent focus:border-transparent transition-all duration-200 ${
+                        errors.password ? 'border-red-500' : 'border-gray-300'
                       }`}
                       placeholder="Enter your password"
                     />
@@ -319,9 +319,9 @@ const LoginPage = () => {
                       onChange={handleInputChange}
                       className="w-4 h-4 text-banking-accent border-gray-300 rounded focus:ring-banking-accent"
                     />
-                    <span className="ml-2 text-sm text-blue-200">Remember me</span>
+                    <span className="ml-2 text-sm text-gray-600">Remember me</span>
                   </label>
-                  <Link href="/forgot-password" className="text-sm text-blue-300 hover:text-white">
+                  <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
                     Forgot password?
                   </Link>
                 </div>
@@ -351,8 +351,8 @@ const LoginPage = () => {
 
               {/* Sign Up Link */}
               <div className="mt-6 sm:mt-8 text-center">
-                <span className="text-blue-200 text-sm sm:text-base">Don&apos;t have an account? </span>
-                <Link href="/signup" className="text-blue-300 hover:text-white font-medium text-sm sm:text-base">
+                <span className="text-gray-600 text-sm sm:text-base">Don&apos;t have an account? </span>
+                <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base">
                   Sign up here
                 </Link>
               </div>
@@ -371,10 +371,10 @@ const LoginPage = () => {
 
               {/* Help & Support */}
               <div className="mt-4 text-center">
-                <p className="text-sm text-blue-200 mb-2">Need help signing in?</p>
+                <p className="text-sm text-gray-600 mb-2">Need help signing in?</p>
                 <div className="flex justify-center space-x-4 text-sm">
-                  <Link href="/help" className="text-blue-300 hover:text-white">Contact Support</Link>
-                  <Link href="/help/login" className="text-blue-300 hover:text-white">Login Help</Link>
+                  <Link href="/help" className="text-blue-600 hover:text-blue-700">Contact Support</Link>
+                  <Link href="/help/login" className="text-blue-600 hover:text-blue-700">Login Help</Link>
                 </div>
               </div>
             </div>

@@ -64,6 +64,35 @@ export interface Payee {
     created_at: string;
     updated_at: string;
 }
+export interface ChatSession {
+    id: number;
+    user_id: number;
+    agent_id?: number;
+    status: 'waiting' | 'active' | 'resolved' | 'closed';
+    subject?: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    created_at: string;
+    updated_at: string;
+    closed_at?: string;
+}
+export interface ChatMessage {
+    id: number;
+    session_id: number;
+    sender_id: number;
+    sender_type: 'user' | 'agent' | 'system';
+    message_text: string;
+    message_type: 'text' | 'system' | 'file';
+    is_read: boolean;
+    created_at: string;
+}
+export interface ChatAgentStatus {
+    id: number;
+    agent_id: number;
+    status: 'online' | 'busy' | 'offline';
+    max_concurrent_chats: number;
+    current_chat_count: number;
+    last_activity: string;
+}
 export declare class DatabaseService {
     private db;
     constructor();
@@ -89,6 +118,18 @@ export declare class DatabaseService {
     updatePayee(id: number, updates: Partial<Payee>): Promise<Payee | null>;
     getTotalBalance(userId: number): Promise<number>;
     getPendingTransactionsCount(userId: number): Promise<number>;
+    createChatSession(userId: number, subject?: string): Promise<ChatSession>;
+    getChatSession(sessionId: number): Promise<ChatSession | null>;
+    getUserChatSessions(userId: number): Promise<ChatSession[]>;
+    getActiveChatSessions(): Promise<ChatSession[]>;
+    updateChatSession(sessionId: number, updates: Partial<ChatSession>): Promise<ChatSession | null>;
+    addChatMessage(sessionId: number, senderId: number, senderType: string, messageText: string): Promise<ChatMessage>;
+    getChatMessage(messageId: number): Promise<ChatMessage | null>;
+    getChatMessages(sessionId: number): Promise<ChatMessage[]>;
+    markMessagesAsRead(sessionId: number, userId: number): Promise<void>;
+    getUnreadMessageCount(sessionId: number, userId: number): Promise<number>;
+    updateAgentStatus(agentId: number, status: string): Promise<void>;
+    getAvailableAgents(): Promise<ChatAgentStatus[]>;
     initializeTestData(): Promise<void>;
 }
 declare const _default: DatabaseService;

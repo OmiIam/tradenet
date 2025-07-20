@@ -6,13 +6,14 @@ interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'light' | 'dark';
   className?: string;
+  showText?: boolean;
 }
 
-const Logo = ({ size = 'md', variant = 'dark', className = '' }: LogoProps) => {
+const Logo = ({ size = 'md', variant = 'dark', className = '', showText = true }: LogoProps) => {
   const sizes = {
-    sm: { icon: 'w-8 h-8', text: 'text-xl' },
-    md: { icon: 'w-10 h-10', text: 'text-2xl' },
-    lg: { icon: 'w-12 h-12', text: 'text-3xl' }
+    sm: { icon: 'w-8 h-8', text: 'text-lg' },
+    md: { icon: 'w-10 h-10', text: 'text-xl' },
+    lg: { icon: 'w-12 h-12', text: 'text-2xl' }
   };
 
   const colors = {
@@ -20,13 +21,15 @@ const Logo = ({ size = 'md', variant = 'dark', className = '' }: LogoProps) => {
       primary: '#ffffff',
       secondary: '#e2e8f0',
       accent: '#3b82f6',
+      background: '#1e3a8a',
       text: 'text-white'
     },
     dark: {
       primary: '#1e3a8a',
-      secondary: '#334155',
-      accent: '#3b82f6',
-      text: 'text-banking-navy'
+      secondary: '#3b82f6',
+      accent: '#60a5fa',
+      background: '#ffffff',
+      text: 'text-gray-900'
     }
   };
 
@@ -36,66 +39,101 @@ const Logo = ({ size = 'md', variant = 'dark', className = '' }: LogoProps) => {
   return (
     <motion.div 
       className={`flex items-center space-x-3 ${className}`}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
     >
-      {/* Custom Logo Icon */}
+      {/* Professional Abstract Banking Logo */}
       <div className={`${currentSize.icon} relative`}>
         <svg
           viewBox="0 0 48 48"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
+          className="w-full h-full drop-shadow-sm"
         >
-          {/* Outer Ring */}
+          {/* Main Shield/Vault Shape */}
+          <path
+            d="M24 4 L38 12 L38 24 Q38 34 24 42 Q10 34 10 24 L10 12 Z"
+            fill={currentColors.primary}
+            stroke={currentColors.accent}
+            strokeWidth="1"
+            className="drop-shadow-sm"
+          />
+          
+          {/* Inner Security Pattern - Concentric Shapes */}
           <circle
             cx="24"
-            cy="24"
-            r="22"
-            stroke={currentColors.accent}
-            strokeWidth="2"
+            cy="22"
+            r="12"
             fill="none"
+            stroke={currentColors.background}
+            strokeWidth="2"
+            opacity="0.9"
           />
           
-          {/* Inner Diamond/Shield Shape */}
-          <path
-            d="M24 6 L36 18 L24 30 L12 18 Z"
-            fill={currentColors.accent}
-            fillOpacity="0.1"
-            stroke={currentColors.accent}
+          <circle
+            cx="24"
+            cy="22"
+            r="8"
+            fill="none"
+            stroke={currentColors.background}
             strokeWidth="1.5"
+            opacity="0.7"
           />
           
-          {/* Central "P" and "E" Letters */}
-          <g fill={currentColors.accent}>
-            {/* P */}
-            <path d="M18 14 L18 26 M18 14 L22 14 Q24 14 24 17 Q24 20 22 20 L18 20" 
-                  stroke={currentColors.accent} 
-                  strokeWidth="1.5" 
-                  fill="none" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" />
-            
-            {/* E */}
-            <path d="M26 14 L26 26 M26 14 L30 14 M26 20 L29 20 M26 26 L30 26" 
-                  stroke={currentColors.accent} 
-                  strokeWidth="1.5" 
-                  fill="none" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" />
-          </g>
+          {/* Central Diamond - Financial Growth Symbol */}
+          <path
+            d="M24 16 L28 22 L24 28 L20 22 Z"
+            fill={currentColors.background}
+            opacity="0.8"
+          />
           
-          {/* Accent Lines */}
-          <line x1="12" y1="32" x2="36" y2="32" stroke={currentColors.accent} strokeWidth="1" opacity="0.5" />
-          <line x1="15" y1="35" x2="33" y2="35" stroke={currentColors.accent} strokeWidth="1" opacity="0.3" />
+          {/* Growth Arrow Indicators */}
+          <path
+            d="M19 18 L21 16 L19 14"
+            stroke={currentColors.background}
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.6"
+          />
+          <path
+            d="M29 18 L27 16 L29 14"
+            stroke={currentColors.background}
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.6"
+          />
+          
+          {/* Stability Base */}
+          <rect
+            x="16"
+            y="34"
+            width="16"
+            height="3"
+            fill={currentColors.accent}
+            rx="1.5"
+            opacity="0.8"
+          />
+          
+          {/* Security Dots */}
+          <circle cx="24" cy="22" r="2" fill={currentColors.background} opacity="0.9" />
+          <circle cx="21" cy="19" r="1" fill={currentColors.background} opacity="0.6" />
+          <circle cx="27" cy="19" r="1" fill={currentColors.background} opacity="0.6" />
+          <circle cx="21" cy="25" r="1" fill={currentColors.background} opacity="0.6" />
+          <circle cx="27" cy="25" r="1" fill={currentColors.background} opacity="0.6" />
         </svg>
       </div>
 
       {/* Brand Text */}
-      <div className={`${currentColors.text} font-bold ${currentSize.text}`}>
-        <span className="block leading-none">Prime Edge</span>
-        <span className="block text-sm font-medium opacity-80 leading-none">BANKING</span>
-      </div>
+      {showText && (
+        <div className={`${currentColors.text} font-bold ${currentSize.text}`}>
+          <span className="block leading-none font-black">Prime Edge</span>
+          <span className="block text-xs font-semibold opacity-90 leading-none tracking-wider">BANKING</span>
+        </div>
+      )}
     </motion.div>
   );
 };

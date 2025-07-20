@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.asyncHandler = exports.globalErrorHandler = exports.notFoundHandler = exports.InternalServerError = exports.ConflictError = exports.NotFoundError = exports.AuthorizationError = exports.AuthenticationError = exports.ValidationError = void 0;
+exports.asyncHandler = exports.globalErrorHandler = exports.notFoundHandler = exports.InternalServerError = exports.ConflictError = exports.NotFoundError = exports.AuthorizationError = exports.ForbiddenError = exports.AuthenticationError = exports.ValidationError = void 0;
 const logger_1 = require("../config/logger");
 class ValidationError extends Error {
     constructor(message) {
@@ -22,6 +22,16 @@ class AuthenticationError extends Error {
     }
 }
 exports.AuthenticationError = AuthenticationError;
+class ForbiddenError extends Error {
+    constructor(message = 'Access forbidden') {
+        super(message);
+        this.statusCode = 403;
+        this.isOperational = true;
+        this.code = 'FORBIDDEN_ERROR';
+        this.name = 'ForbiddenError';
+    }
+}
+exports.ForbiddenError = ForbiddenError;
 class AuthorizationError extends Error {
     constructor(message = 'Insufficient privileges') {
         super(message);

@@ -10,6 +10,9 @@ export interface JsonDatabase {
   payees: any[];
   adminLogs: any[];
   sessions: any[];
+  chatSessions: any[];
+  chatMessages: any[];
+  chatAgentStatus: any[];
 }
 
 const DB_PATH = join(process.cwd(), 'data.json');
@@ -22,7 +25,10 @@ function loadDatabase(): JsonDatabase {
       transactions: [],
       payees: [],
       adminLogs: [],
-      sessions: []
+      sessions: [],
+      chatSessions: [],
+      chatMessages: [],
+      chatAgentStatus: []
     };
     saveDatabase(emptyDb);
     return emptyDb;
@@ -39,7 +45,10 @@ function loadDatabase(): JsonDatabase {
       transactions: [],
       payees: [],
       adminLogs: [],
-      sessions: []
+      sessions: [],
+      chatSessions: [],
+      chatMessages: [],
+      chatAgentStatus: []
     };
   }
 }
@@ -292,6 +301,146 @@ export const JsonDB = {
       const transactionDate = new Date(transaction.transaction_date);
       return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
     });
+  },
+
+  // Chat operations
+  createChatSession: (userId: number, subject?: string) => {
+    const db = loadDatabase();
+    const newSession = {
+      id: Math.max(...db.chatSessions.map(s => s.id), 0) + 1,
+      user_id: userId,
+      agent_id: null,
+      status: 'waiting',
+      subject: subject || null,
+      priority: 'medium',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      closed_at: null
+    };
+    db.chatSessions.push(newSession);
+    saveDatabase(db);
+    return newSession;
+  },
+
+  getChatSession: (sessionId: number) => {
+    const db = loadDatabase();
+    return db.chatSessions.find(session => session.id === sessionId);
+  },
+
+  getUserChatSessions: (userId: number) => {
+    const db = loadDatabase();
+    return db.chatSessions
+      .filter(session => session.user_id === userId)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  },
+
+  getActiveChatSessions: () => {
+    const db = loadDatabase();
+    return db.chatSessions.filter(session => 
+      session.status === 'waiting' || session.status === 'active'
+    );
+  },
+
+  updateChatSession: (sessionId: number, updates: any) => {
+    const db = loadDatabase();
+    const sessionIndex = db.chatSessions.findIndex(session => session.id === sessionId);
+    if (sessionIndex !== -1) {
+      db.chatSessions[sessionIndex] = {
+        ...db.chatSessions[sessionIndex],
+        ...updates,
+        updated_at: new Date().toISOString()
+      };
+      saveDatabase(db);
+      return db.chatSessions[sessionIndex];
+    }
+    return null;
+  },
+
+  addChatMessage: (sessionId: number, senderId: number, senderType: string, messageText: string) => {
+    const db = loadDatabase();
+    const newMessage = {
+      id: Math.max(...db.chatMessages.map(m => m.id), 0) + 1,
+      session_id: sessionId,
+      sender_id: senderId,
+      sender_type: senderType,
+      message_text: messageText,
+      message_type: 'text',
+      is_read: false,
+      created_at: new Date().toISOString()
+    };
+    db.chatMessages.push(newMessage);
+    
+    // Update session timestamp
+    const sessionIndex = db.chatSessions.findIndex(session => session.id === sessionId);
+    if (sessionIndex !== -1) {
+      db.chatSessions[sessionIndex].updated_at = new Date().toISOString();
+    }
+    
+    saveDatabase(db);
+    return newMessage;
+  },
+
+  getChatMessages: (sessionId: number) => {
+    const db = loadDatabase();
+    return db.chatMessages
+      .filter(message => message.session_id === sessionId)
+      .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+  },
+
+  markMessagesAsRead: (sessionId: number, userId: number) => {
+    const db = loadDatabase();
+    let updated = false;
+    db.chatMessages.forEach(message => {
+      if (message.session_id === sessionId && message.sender_id !== userId && !message.is_read) {
+        message.is_read = true;
+        updated = true;
+      }
+    });
+    if (updated) {
+      saveDatabase(db);
+    }
+  },
+
+  getUnreadMessageCount: (sessionId: number, userId: number) => {
+    const db = loadDatabase();
+    return db.chatMessages.filter(message => 
+      message.session_id === sessionId && 
+      message.sender_id !== userId && 
+      !message.is_read
+    ).length;
+  },
+
+  // Agent status operations
+  updateAgentStatus: (agentId: number, status: string) => {
+    const db = loadDatabase();
+    const existingIndex = db.chatAgentStatus.findIndex(agent => agent.agent_id === agentId);
+    
+    if (existingIndex !== -1) {
+      db.chatAgentStatus[existingIndex] = {
+        ...db.chatAgentStatus[existingIndex],
+        status,
+        last_activity: new Date().toISOString()
+      };
+    } else {
+      db.chatAgentStatus.push({
+        id: Math.max(...db.chatAgentStatus.map(a => a.id), 0) + 1,
+        agent_id: agentId,
+        status,
+        max_concurrent_chats: 3,
+        current_chat_count: 0,
+        last_activity: new Date().toISOString()
+      });
+    }
+    
+    saveDatabase(db);
+  },
+
+  getAvailableAgents: () => {
+    const db = loadDatabase();
+    return db.chatAgentStatus.filter(agent => 
+      agent.status === 'online' && 
+      agent.current_chat_count < agent.max_concurrent_chats
+    );
   }
 };
 

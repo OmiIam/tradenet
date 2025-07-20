@@ -275,7 +275,7 @@ export default function TransfersPage() {
                     ...prev, 
                     fromAccountId: parseInt(e.target.value) 
                   }))}
-                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   required
                 >
                   {accounts.map((account) => (
@@ -299,7 +299,7 @@ export default function TransfersPage() {
                       toAccountId: parseInt(e.target.value),
                       payeeId: undefined
                     }))}
-                    className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     required
                   >
                     <option value="">Select destination account</option>
@@ -320,7 +320,7 @@ export default function TransfersPage() {
                         payeeId: parseInt(e.target.value),
                         toAccountId: undefined
                       }))}
-                      className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                       required
                     >
                       <option value="">Select payee</option>
@@ -358,7 +358,7 @@ export default function TransfersPage() {
                       ...prev, 
                       amount: parseFloat(e.target.value) || 0 
                     }))}
-                    className="w-full pl-12 pr-4 py-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                     placeholder="0.00"
                     required
                   />
@@ -382,7 +382,7 @@ export default function TransfersPage() {
                     ...prev, 
                     description: e.target.value 
                   }))}
-                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   placeholder="What's this transfer for?"
                   required
                 />
@@ -400,7 +400,7 @@ export default function TransfersPage() {
                     ...prev, 
                     scheduledDate: e.target.value 
                   }))}
-                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-4 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                   min={new Date().toISOString().slice(0, 16)}
                 />
               </div>
