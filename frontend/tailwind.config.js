@@ -5,6 +5,15 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'bg-banking-accent',
+    'hover:bg-banking-accent',
+    'bg-banking-deepBlue',
+    'hover:bg-banking-deepBlue',
+    'text-banking-accent',
+    'text-banking-deepBlue',
+    // add more as needed
+  ],
   theme: {
     extend: {
       colors: {
@@ -20,8 +29,17 @@ module.exports = {
           warning: '#d97706',     // Accessible orange
           error: '#dc2626',       // Accessible red
         },
-        'banking-accent': '#3b82f6', // Clean blue accent
-        'banking-deepBlue': '#1e3a8a', // Deep blue
+        // Flattened banking colors for direct class usage
+        'banking-primary': '#1e3a8a',
+        'banking-secondary': '#3b82f6',
+        'banking-accent': '#3b82f6',
+        'banking-deepBlue': '#1e3a8a',
+        'banking-navy': '#1e3a8a',
+        'banking-slate': '#475569',
+        'banking-warm': '#f8fafc',
+        'banking-success': '#059669',
+        'banking-warning': '#d97706',
+        'banking-error': '#dc2626'
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
