@@ -14,19 +14,32 @@ const PORT = process.env.PORT || 3000;
 app.set('trust proxy', 1);
 const corsOptions = {
     origin: function (origin, callback) {
-        const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001'];
+        const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:3002',
+            'http://localhost:3003',
+            'https://primeedgefinancebank.com',
+            'http://primeedgefinancebank.com',
+            'https://internet-banking-production-68f4.up.railway.app'
+        ];
         if (!origin)
             return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         }
         else {
-            callback(new Error('Not allowed by CORS'));
+            if (origin && origin.startsWith('http://localhost:')) {
+                callback(null, true);
+            }
+            else {
+                callback(new Error('Not allowed by CORS'));
+            }
         }
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie'],
     optionsSuccessStatus: 200
 };
 app.use((0, cors_1.default)(corsOptions));
@@ -45,6 +58,46 @@ app.get('/health', (req, res) => {
     });
 });
 app.use('/api/auth', simple_auth_1.default);
+app.get('/api/dashboard/overview', (req, res) => {
+    const mockData = {
+        user: {
+            id: 1,
+            email: 'admin@primeedge.com',
+            firstName: 'System',
+            lastName: 'Administrator',
+            isAdmin: true,
+            accountType: 'personal'
+        },
+        accounts: [
+            {
+                id: 1,
+                accountNumber: '****1234',
+                accountType: 'Checking',
+                accountName: 'Primary Checking',
+                balance: 15420.50,
+                availableBalance: 15420.50
+            }
+        ],
+        totalBalance: 15420.50,
+        recentTransactions: [
+            {
+                id: 1,
+                accountId: 1,
+                transactionType: 'credit',
+                amount: 2500.00,
+                description: 'Salary Deposit',
+                category: 'Income',
+                status: 'completed',
+                transactionDate: new Date().toISOString(),
+                createdAt: new Date().toISOString()
+            }
+        ],
+        monthlySpending: 3250.75,
+        monthlyIncome: 5500.00,
+        pendingTransactions: 0
+    };
+    res.json(mockData);
+});
 app.get('/api', (req, res) => {
     res.json({
         name: 'Internet Banking API',
@@ -52,6 +105,7 @@ app.get('/api', (req, res) => {
         description: 'Production-grade banking backend API',
         endpoints: {
             auth: '/api/auth',
+            dashboard: '/api/dashboard/overview'
         },
         health: '/health'
     });
